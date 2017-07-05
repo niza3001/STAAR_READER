@@ -1,0 +1,539 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A18A0211F0DA0E50083BE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */; };
+		9A18A0231F0DA0E50083BE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0221F0DA0E50083BE77 /* ViewController.swift */; };
+		9A18A0261F0DA0E50083BE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0241F0DA0E50083BE77 /* Main.storyboard */; };
+		9A18A0281F0DA0E50083BE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0271F0DA0E50083BE77 /* Assets.xcassets */; };
+		9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */; };
+		9A18A0361F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0351F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift */; };
+		9A18A0411F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9A18A0321F0DA0E50083BE77 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A18A0151F0DA0E50083BE77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A18A01C1F0DA0E50083BE77;
+			remoteInfo = STAAR_Reader_2016;
+		};
+		9A18A03D1F0DA0E50083BE77 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A18A0151F0DA0E50083BE77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A18A01C1F0DA0E50083BE77;
+			remoteInfo = STAAR_Reader_2016;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9A18A01D1F0DA0E50083BE77 /* STAAR_Reader_2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STAAR_Reader_2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9A18A0221F0DA0E50083BE77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9A18A0251F0DA0E50083BE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9A18A0271F0DA0E50083BE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A18A02A1F0DA0E50083BE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9A18A02C1F0DA0E50083BE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A18A0311F0DA0E50083BE77 /* STAAR_Reader_2016Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAAR_Reader_2016Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A18A0351F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STAAR_Reader_2016Tests.swift; sourceTree = "<group>"; };
+		9A18A0371F0DA0E50083BE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A18A03C1F0DA0E50083BE77 /* STAAR_Reader_2016UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAAR_Reader_2016UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STAAR_Reader_2016UITests.swift; sourceTree = "<group>"; };
+		9A18A0421F0DA0E50083BE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9A18A01A1F0DA0E50083BE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A02E1F0DA0E50083BE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A0391F0DA0E50083BE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9A18A0141F0DA0E50083BE77 = {
+			isa = PBXGroup;
+			children = (
+				9A18A01F1F0DA0E50083BE77 /* STAAR_Reader_2016 */,
+				9A18A0341F0DA0E50083BE77 /* STAAR_Reader_2016Tests */,
+				9A18A03F1F0DA0E50083BE77 /* STAAR_Reader_2016UITests */,
+				9A18A01E1F0DA0E50083BE77 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9A18A01E1F0DA0E50083BE77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A18A01D1F0DA0E50083BE77 /* STAAR_Reader_2016.app */,
+				9A18A0311F0DA0E50083BE77 /* STAAR_Reader_2016Tests.xctest */,
+				9A18A03C1F0DA0E50083BE77 /* STAAR_Reader_2016UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9A18A01F1F0DA0E50083BE77 /* STAAR_Reader_2016 */ = {
+			isa = PBXGroup;
+			children = (
+				9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */,
+				9A18A0221F0DA0E50083BE77 /* ViewController.swift */,
+				9A18A0241F0DA0E50083BE77 /* Main.storyboard */,
+				9A18A0271F0DA0E50083BE77 /* Assets.xcassets */,
+				9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */,
+				9A18A02C1F0DA0E50083BE77 /* Info.plist */,
+			);
+			path = STAAR_Reader_2016;
+			sourceTree = "<group>";
+		};
+		9A18A0341F0DA0E50083BE77 /* STAAR_Reader_2016Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9A18A0351F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift */,
+				9A18A0371F0DA0E50083BE77 /* Info.plist */,
+			);
+			path = STAAR_Reader_2016Tests;
+			sourceTree = "<group>";
+		};
+		9A18A03F1F0DA0E50083BE77 /* STAAR_Reader_2016UITests */ = {
+			isa = PBXGroup;
+			children = (
+				9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */,
+				9A18A0421F0DA0E50083BE77 /* Info.plist */,
+			);
+			path = STAAR_Reader_2016UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A18A01C1F0DA0E50083BE77 /* STAAR_Reader_2016 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A18A0451F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016" */;
+			buildPhases = (
+				9A18A0191F0DA0E50083BE77 /* Sources */,
+				9A18A01A1F0DA0E50083BE77 /* Frameworks */,
+				9A18A01B1F0DA0E50083BE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = STAAR_Reader_2016;
+			productName = STAAR_Reader_2016;
+			productReference = 9A18A01D1F0DA0E50083BE77 /* STAAR_Reader_2016.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9A18A0301F0DA0E50083BE77 /* STAAR_Reader_2016Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A18A0481F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016Tests" */;
+			buildPhases = (
+				9A18A02D1F0DA0E50083BE77 /* Sources */,
+				9A18A02E1F0DA0E50083BE77 /* Frameworks */,
+				9A18A02F1F0DA0E50083BE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A18A0331F0DA0E50083BE77 /* PBXTargetDependency */,
+			);
+			name = STAAR_Reader_2016Tests;
+			productName = STAAR_Reader_2016Tests;
+			productReference = 9A18A0311F0DA0E50083BE77 /* STAAR_Reader_2016Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9A18A03B1F0DA0E50083BE77 /* STAAR_Reader_2016UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A18A04B1F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016UITests" */;
+			buildPhases = (
+				9A18A0381F0DA0E50083BE77 /* Sources */,
+				9A18A0391F0DA0E50083BE77 /* Frameworks */,
+				9A18A03A1F0DA0E50083BE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A18A03E1F0DA0E50083BE77 /* PBXTargetDependency */,
+			);
+			name = STAAR_Reader_2016UITests;
+			productName = STAAR_Reader_2016UITests;
+			productReference = 9A18A03C1F0DA0E50083BE77 /* STAAR_Reader_2016UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9A18A0151F0DA0E50083BE77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = TEILab;
+				TargetAttributes = {
+					9A18A01C1F0DA0E50083BE77 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 38TT54W2TA;
+						ProvisioningStyle = Automatic;
+					};
+					9A18A0301F0DA0E50083BE77 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 38TT54W2TA;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 9A18A01C1F0DA0E50083BE77;
+					};
+					9A18A03B1F0DA0E50083BE77 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 38TT54W2TA;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 9A18A01C1F0DA0E50083BE77;
+					};
+				};
+			};
+			buildConfigurationList = 9A18A0181F0DA0E50083BE77 /* Build configuration list for PBXProject "STAAR_Reader_2016" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9A18A0141F0DA0E50083BE77;
+			productRefGroup = 9A18A01E1F0DA0E50083BE77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A18A01C1F0DA0E50083BE77 /* STAAR_Reader_2016 */,
+				9A18A0301F0DA0E50083BE77 /* STAAR_Reader_2016Tests */,
+				9A18A03B1F0DA0E50083BE77 /* STAAR_Reader_2016UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A18A01B1F0DA0E50083BE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */,
+				9A18A0281F0DA0E50083BE77 /* Assets.xcassets in Resources */,
+				9A18A0261F0DA0E50083BE77 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A02F1F0DA0E50083BE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A03A1F0DA0E50083BE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9A18A0191F0DA0E50083BE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A18A0231F0DA0E50083BE77 /* ViewController.swift in Sources */,
+				9A18A0211F0DA0E50083BE77 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A02D1F0DA0E50083BE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A18A0361F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A18A0381F0DA0E50083BE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A18A0411F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9A18A0331F0DA0E50083BE77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A18A01C1F0DA0E50083BE77 /* STAAR_Reader_2016 */;
+			targetProxy = 9A18A0321F0DA0E50083BE77 /* PBXContainerItemProxy */;
+		};
+		9A18A03E1F0DA0E50083BE77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A18A01C1F0DA0E50083BE77 /* STAAR_Reader_2016 */;
+			targetProxy = 9A18A03D1F0DA0E50083BE77 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9A18A0241F0DA0E50083BE77 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A18A0251F0DA0E50083BE77 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A18A02A1F0DA0E50083BE77 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9A18A0431F0DA0E50083BE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		9A18A0441F0DA0E50083BE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9A18A0461F0DA0E50083BE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		9A18A0471F0DA0E50083BE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		9A18A0491F0DA0E50083BE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/STAAR_Reader_2016.app/STAAR_Reader_2016";
+			};
+			name = Debug;
+		};
+		9A18A04A1F0DA0E50083BE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/STAAR_Reader_2016.app/STAAR_Reader_2016";
+			};
+			name = Release;
+		};
+		9A18A04C1F0DA0E50083BE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = STAAR_Reader_2016;
+			};
+			name = Debug;
+		};
+		9A18A04D1F0DA0E50083BE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 38TT54W2TA;
+				INFOPLIST_FILE = STAAR_Reader_2016UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = STAAR_Reader_2016;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A18A0181F0DA0E50083BE77 /* Build configuration list for PBXProject "STAAR_Reader_2016" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A18A0431F0DA0E50083BE77 /* Debug */,
+				9A18A0441F0DA0E50083BE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A18A0451F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A18A0461F0DA0E50083BE77 /* Debug */,
+				9A18A0471F0DA0E50083BE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9A18A0481F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A18A0491F0DA0E50083BE77 /* Debug */,
+				9A18A04A1F0DA0E50083BE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9A18A04B1F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A18A04C1F0DA0E50083BE77 /* Debug */,
+				9A18A04D1F0DA0E50083BE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9A18A0151F0DA0E50083BE77 /* Project object */;
+}
