@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  STAAR_Reader_2016
 //
-//  Created by niloofar zarei on 7/5/17.
-//  Copyright © 2017 TEILab. All rights reserved.
+//  Created by Niloofar Zarei.
+//  Copyright © 2016 TEILab. All rights reserved.
 //
 
 import UIKit

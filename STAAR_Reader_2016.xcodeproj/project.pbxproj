@@ -8,12 +8,44 @@
 
 /* Begin PBXBuildFile section */
 		9A18A0211F0DA0E50083BE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */; };
-		9A18A0231F0DA0E50083BE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0221F0DA0E50083BE77 /* ViewController.swift */; };
+		9A18A0231F0DA0E50083BE77 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0221F0DA0E50083BE77 /* MainViewController.swift */; };
 		9A18A0261F0DA0E50083BE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0241F0DA0E50083BE77 /* Main.storyboard */; };
 		9A18A0281F0DA0E50083BE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0271F0DA0E50083BE77 /* Assets.xcassets */; };
 		9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */; };
 		9A18A0361F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0351F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift */; };
 		9A18A0411F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */; };
+		9AF1A9301F0EC942003EB744 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A92F1F0EC942003EB744 /* DocumentViewController.swift */; };
+		9AF1A9321F0EC9A4003EB744 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9311F0EC9A4003EB744 /* DocumentView.swift */; };
+		9AF1A9341F0EC9DA003EB744 /* VRulerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9331F0EC9DA003EB744 /* VRulerController.swift */; };
+		9AF1A9361F0ECABD003EB744 /* PDFModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9351F0ECABD003EB744 /* PDFModel.swift */; };
+		9AF1A9381F0ECAF8003EB744 /* MathFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9371F0ECAF8003EB744 /* MathFunctions.swift */; };
+		9AF1A93F1F0FE7A7003EB744 /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A9391F0FE7A7003EB744 /* click.wav */; };
+		9AF1A9411F0FE7A7003EB744 /* ding1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A93B1F0FE7A7003EB744 /* ding1.caf */; };
+		9AF1A9421F0FE7A7003EB744 /* paper_touching.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A93C1F0FE7A7003EB744 /* paper_touching.caf */; };
+		9AF1A9431F0FE7A7003EB744 /* pinkStatic.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A93D1F0FE7A7003EB744 /* pinkStatic.caf */; };
+		9AF1A9441F0FE7A7003EB744 /* whiteStatic.caf in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A93E1F0FE7A7003EB744 /* whiteStatic.caf */; };
+		9AF1A9711F0FE7DA003EB744 /* CIDFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9481F0FE7DA003EB744 /* CIDFont.m */; };
+		9AF1A9721F0FE7DA003EB744 /* CIDType0Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A94A1F0FE7DA003EB744 /* CIDType0Font.m */; };
+		9AF1A9731F0FE7DA003EB744 /* CIDType2Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A94C1F0FE7DA003EB744 /* CIDType2Font.m */; };
+		9AF1A9741F0FE7DA003EB744 /* CMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A94E1F0FE7DA003EB744 /* CMap.m */; };
+		9AF1A9751F0FE7DA003EB744 /* CompositeFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9501F0FE7DA003EB744 /* CompositeFont.m */; };
+		9AF1A9761F0FE7DA003EB744 /* Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9521F0FE7DA003EB744 /* Font.m */; };
+		9AF1A9771F0FE7DA003EB744 /* FontCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9541F0FE7DA003EB744 /* FontCollection.m */; };
+		9AF1A9781F0FE7DA003EB744 /* FontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9561F0FE7DA003EB744 /* FontDescriptor.m */; };
+		9AF1A9791F0FE7DA003EB744 /* FontFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9581F0FE7DA003EB744 /* FontFile.m */; };
+		9AF1A97A1F0FE7DA003EB744 /* MMType1Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A95A1F0FE7DA003EB744 /* MMType1Font.m */; };
+		9AF1A97B1F0FE7DA003EB744 /* pdfScannerCallbacks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A95B1F0FE7DA003EB744 /* pdfScannerCallbacks.mm */; };
+		9AF1A97C1F0FE7DA003EB744 /* RenderingState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A95D1F0FE7DA003EB744 /* RenderingState.m */; };
+		9AF1A97D1F0FE7DA003EB744 /* RenderingStateStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A95F1F0FE7DA003EB744 /* RenderingStateStack.m */; };
+		9AF1A97E1F0FE7DA003EB744 /* Scanner2.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9611F0FE7DA003EB744 /* Scanner2.m */; };
+		9AF1A97F1F0FE7DA003EB744 /* Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9631F0FE7DA003EB744 /* Selection.m */; };
+		9AF1A9801F0FE7DA003EB744 /* SimpleFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9651F0FE7DA003EB744 /* SimpleFont.m */; };
+		9AF1A9811F0FE7DA003EB744 /* StringDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9671F0FE7DA003EB744 /* StringDetector.m */; };
+		9AF1A9821F0FE7DA003EB744 /* TrueTypeFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A96A1F0FE7DA003EB744 /* TrueTypeFont.m */; };
+		9AF1A9831F0FE7DA003EB744 /* Type0Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A96C1F0FE7DA003EB744 /* Type0Font.m */; };
+		9AF1A9841F0FE7DA003EB744 /* Type1Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A96E1F0FE7DA003EB744 /* Type1Font.m */; };
+		9AF1A9851F0FE7DA003EB744 /* Type3Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9701F0FE7DA003EB744 /* Type3Font.m */; };
+		9AF1A98C1F12B3D4003EB744 /* Demo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A98B1F12B3D4003EB744 /* Demo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +68,7 @@
 /* Begin PBXFileReference section */
 		9A18A01D1F0DA0E50083BE77 /* STAAR_Reader_2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STAAR_Reader_2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9A18A0221F0DA0E50083BE77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9A18A0221F0DA0E50083BE77 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9A18A0251F0DA0E50083BE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9A18A0271F0DA0E50083BE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A18A02A1F0DA0E50083BE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +79,60 @@
 		9A18A03C1F0DA0E50083BE77 /* STAAR_Reader_2016UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAAR_Reader_2016UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STAAR_Reader_2016UITests.swift; sourceTree = "<group>"; };
 		9A18A0421F0DA0E50083BE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AF1A92F1F0EC942003EB744 /* DocumentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
+		9AF1A9311F0EC9A4003EB744 /* DocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
+		9AF1A9331F0EC9DA003EB744 /* VRulerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRulerController.swift; sourceTree = "<group>"; };
+		9AF1A9351F0ECABD003EB744 /* PDFModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFModel.swift; sourceTree = "<group>"; };
+		9AF1A9371F0ECAF8003EB744 /* MathFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathFunctions.swift; sourceTree = "<group>"; };
+		9AF1A9391F0FE7A7003EB744 /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = click.wav; path = Resources/click.wav; sourceTree = "<group>"; };
+		9AF1A93B1F0FE7A7003EB744 /* ding1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ding1.caf; path = Resources/ding1.caf; sourceTree = "<group>"; };
+		9AF1A93C1F0FE7A7003EB744 /* paper_touching.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = paper_touching.caf; path = Resources/paper_touching.caf; sourceTree = "<group>"; };
+		9AF1A93D1F0FE7A7003EB744 /* pinkStatic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = pinkStatic.caf; path = Resources/pinkStatic.caf; sourceTree = "<group>"; };
+		9AF1A93E1F0FE7A7003EB744 /* whiteStatic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = whiteStatic.caf; path = Resources/whiteStatic.caf; sourceTree = "<group>"; };
+		9AF1A9461F0FE7D9003EB744 /* STAAR_Reader_2016-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STAAR_Reader_2016-Bridging-Header.h"; sourceTree = "<group>"; };
+		9AF1A9471F0FE7DA003EB744 /* CIDFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDFont.h; path = Resources/PDFCore/CIDFont.h; sourceTree = "<group>"; };
+		9AF1A9481F0FE7DA003EB744 /* CIDFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDFont.m; path = Resources/PDFCore/CIDFont.m; sourceTree = "<group>"; };
+		9AF1A9491F0FE7DA003EB744 /* CIDType0Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDType0Font.h; path = Resources/PDFCore/CIDType0Font.h; sourceTree = "<group>"; };
+		9AF1A94A1F0FE7DA003EB744 /* CIDType0Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDType0Font.m; path = Resources/PDFCore/CIDType0Font.m; sourceTree = "<group>"; };
+		9AF1A94B1F0FE7DA003EB744 /* CIDType2Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CIDType2Font.h; path = Resources/PDFCore/CIDType2Font.h; sourceTree = "<group>"; };
+		9AF1A94C1F0FE7DA003EB744 /* CIDType2Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CIDType2Font.m; path = Resources/PDFCore/CIDType2Font.m; sourceTree = "<group>"; };
+		9AF1A94D1F0FE7DA003EB744 /* CMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMap.h; path = Resources/PDFCore/CMap.h; sourceTree = "<group>"; };
+		9AF1A94E1F0FE7DA003EB744 /* CMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMap.m; path = Resources/PDFCore/CMap.m; sourceTree = "<group>"; };
+		9AF1A94F1F0FE7DA003EB744 /* CompositeFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompositeFont.h; path = Resources/PDFCore/CompositeFont.h; sourceTree = "<group>"; };
+		9AF1A9501F0FE7DA003EB744 /* CompositeFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompositeFont.m; path = Resources/PDFCore/CompositeFont.m; sourceTree = "<group>"; };
+		9AF1A9511F0FE7DA003EB744 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Font.h; path = Resources/PDFCore/Font.h; sourceTree = "<group>"; };
+		9AF1A9521F0FE7DA003EB744 /* Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Font.m; path = Resources/PDFCore/Font.m; sourceTree = "<group>"; };
+		9AF1A9531F0FE7DA003EB744 /* FontCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontCollection.h; path = Resources/PDFCore/FontCollection.h; sourceTree = "<group>"; };
+		9AF1A9541F0FE7DA003EB744 /* FontCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontCollection.m; path = Resources/PDFCore/FontCollection.m; sourceTree = "<group>"; };
+		9AF1A9551F0FE7DA003EB744 /* FontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontDescriptor.h; path = Resources/PDFCore/FontDescriptor.h; sourceTree = "<group>"; };
+		9AF1A9561F0FE7DA003EB744 /* FontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontDescriptor.m; path = Resources/PDFCore/FontDescriptor.m; sourceTree = "<group>"; };
+		9AF1A9571F0FE7DA003EB744 /* FontFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontFile.h; path = Resources/PDFCore/FontFile.h; sourceTree = "<group>"; };
+		9AF1A9581F0FE7DA003EB744 /* FontFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontFile.m; path = Resources/PDFCore/FontFile.m; sourceTree = "<group>"; };
+		9AF1A9591F0FE7DA003EB744 /* MMType1Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMType1Font.h; path = Resources/PDFCore/MMType1Font.h; sourceTree = "<group>"; };
+		9AF1A95A1F0FE7DA003EB744 /* MMType1Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMType1Font.m; path = Resources/PDFCore/MMType1Font.m; sourceTree = "<group>"; };
+		9AF1A95B1F0FE7DA003EB744 /* pdfScannerCallbacks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = pdfScannerCallbacks.mm; path = Resources/PDFCore/pdfScannerCallbacks.mm; sourceTree = "<group>"; };
+		9AF1A95C1F0FE7DA003EB744 /* RenderingState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingState.h; path = Resources/PDFCore/RenderingState.h; sourceTree = "<group>"; };
+		9AF1A95D1F0FE7DA003EB744 /* RenderingState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingState.m; path = Resources/PDFCore/RenderingState.m; sourceTree = "<group>"; };
+		9AF1A95E1F0FE7DA003EB744 /* RenderingStateStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderingStateStack.h; path = Resources/PDFCore/RenderingStateStack.h; sourceTree = "<group>"; };
+		9AF1A95F1F0FE7DA003EB744 /* RenderingStateStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenderingStateStack.m; path = Resources/PDFCore/RenderingStateStack.m; sourceTree = "<group>"; };
+		9AF1A9601F0FE7DA003EB744 /* Scanner2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scanner2.h; path = Resources/PDFCore/Scanner2.h; sourceTree = "<group>"; };
+		9AF1A9611F0FE7DA003EB744 /* Scanner2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Scanner2.m; path = Resources/PDFCore/Scanner2.m; sourceTree = "<group>"; };
+		9AF1A9621F0FE7DA003EB744 /* Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Selection.h; path = Resources/PDFCore/Selection.h; sourceTree = "<group>"; };
+		9AF1A9631F0FE7DA003EB744 /* Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Selection.m; path = Resources/PDFCore/Selection.m; sourceTree = "<group>"; };
+		9AF1A9641F0FE7DA003EB744 /* SimpleFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleFont.h; path = Resources/PDFCore/SimpleFont.h; sourceTree = "<group>"; };
+		9AF1A9651F0FE7DA003EB744 /* SimpleFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleFont.m; path = Resources/PDFCore/SimpleFont.m; sourceTree = "<group>"; };
+		9AF1A9661F0FE7DA003EB744 /* StringDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringDetector.h; path = Resources/PDFCore/StringDetector.h; sourceTree = "<group>"; };
+		9AF1A9671F0FE7DA003EB744 /* StringDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringDetector.m; path = Resources/PDFCore/StringDetector.m; sourceTree = "<group>"; };
+		9AF1A9681F0FE7DA003EB744 /* StringDetectorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringDetectorDelegate.h; path = Resources/PDFCore/StringDetectorDelegate.h; sourceTree = "<group>"; };
+		9AF1A9691F0FE7DA003EB744 /* TrueTypeFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrueTypeFont.h; path = Resources/PDFCore/TrueTypeFont.h; sourceTree = "<group>"; };
+		9AF1A96A1F0FE7DA003EB744 /* TrueTypeFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TrueTypeFont.m; path = Resources/PDFCore/TrueTypeFont.m; sourceTree = "<group>"; };
+		9AF1A96B1F0FE7DA003EB744 /* Type0Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Type0Font.h; path = Resources/PDFCore/Type0Font.h; sourceTree = "<group>"; };
+		9AF1A96C1F0FE7DA003EB744 /* Type0Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Type0Font.m; path = Resources/PDFCore/Type0Font.m; sourceTree = "<group>"; };
+		9AF1A96D1F0FE7DA003EB744 /* Type1Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Type1Font.h; path = Resources/PDFCore/Type1Font.h; sourceTree = "<group>"; };
+		9AF1A96E1F0FE7DA003EB744 /* Type1Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Type1Font.m; path = Resources/PDFCore/Type1Font.m; sourceTree = "<group>"; };
+		9AF1A96F1F0FE7DA003EB744 /* Type3Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Type3Font.h; path = Resources/PDFCore/Type3Font.h; sourceTree = "<group>"; };
+		9AF1A9701F0FE7DA003EB744 /* Type3Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Type3Font.m; path = Resources/PDFCore/Type3Font.m; sourceTree = "<group>"; };
+		9AF1A98B1F12B3D4003EB744 /* Demo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Demo; path = Resources/Demo; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +183,19 @@
 		9A18A01F1F0DA0E50083BE77 /* STAAR_Reader_2016 */ = {
 			isa = PBXGroup;
 			children = (
+				9AF1A9451F0FE7B9003EB744 /* Resources */,
 				9A18A0201F0DA0E50083BE77 /* AppDelegate.swift */,
-				9A18A0221F0DA0E50083BE77 /* ViewController.swift */,
+				9A18A0221F0DA0E50083BE77 /* MainViewController.swift */,
+				9AF1A92F1F0EC942003EB744 /* DocumentViewController.swift */,
+				9AF1A9311F0EC9A4003EB744 /* DocumentView.swift */,
+				9AF1A9331F0EC9DA003EB744 /* VRulerController.swift */,
+				9AF1A9351F0ECABD003EB744 /* PDFModel.swift */,
+				9AF1A9371F0ECAF8003EB744 /* MathFunctions.swift */,
 				9A18A0241F0DA0E50083BE77 /* Main.storyboard */,
 				9A18A0271F0DA0E50083BE77 /* Assets.xcassets */,
 				9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */,
 				9A18A02C1F0DA0E50083BE77 /* Info.plist */,
+				9AF1A9461F0FE7D9003EB744 /* STAAR_Reader_2016-Bridging-Header.h */,
 			);
 			path = STAAR_Reader_2016;
 			sourceTree = "<group>";
@@ -123,6 +216,69 @@
 				9A18A0421F0DA0E50083BE77 /* Info.plist */,
 			);
 			path = STAAR_Reader_2016UITests;
+			sourceTree = "<group>";
+		};
+		9AF1A9451F0FE7B9003EB744 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9AF1A9861F0FE800003EB744 /* PDFCore */,
+				9AF1A98B1F12B3D4003EB744 /* Demo */,
+				9AF1A9391F0FE7A7003EB744 /* click.wav */,
+				9AF1A93B1F0FE7A7003EB744 /* ding1.caf */,
+				9AF1A93C1F0FE7A7003EB744 /* paper_touching.caf */,
+				9AF1A93D1F0FE7A7003EB744 /* pinkStatic.caf */,
+				9AF1A93E1F0FE7A7003EB744 /* whiteStatic.caf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9AF1A9861F0FE800003EB744 /* PDFCore */ = {
+			isa = PBXGroup;
+			children = (
+				9AF1A9471F0FE7DA003EB744 /* CIDFont.h */,
+				9AF1A9481F0FE7DA003EB744 /* CIDFont.m */,
+				9AF1A9491F0FE7DA003EB744 /* CIDType0Font.h */,
+				9AF1A94A1F0FE7DA003EB744 /* CIDType0Font.m */,
+				9AF1A94B1F0FE7DA003EB744 /* CIDType2Font.h */,
+				9AF1A94C1F0FE7DA003EB744 /* CIDType2Font.m */,
+				9AF1A94D1F0FE7DA003EB744 /* CMap.h */,
+				9AF1A94E1F0FE7DA003EB744 /* CMap.m */,
+				9AF1A94F1F0FE7DA003EB744 /* CompositeFont.h */,
+				9AF1A9501F0FE7DA003EB744 /* CompositeFont.m */,
+				9AF1A9511F0FE7DA003EB744 /* Font.h */,
+				9AF1A9521F0FE7DA003EB744 /* Font.m */,
+				9AF1A9531F0FE7DA003EB744 /* FontCollection.h */,
+				9AF1A9541F0FE7DA003EB744 /* FontCollection.m */,
+				9AF1A9551F0FE7DA003EB744 /* FontDescriptor.h */,
+				9AF1A9561F0FE7DA003EB744 /* FontDescriptor.m */,
+				9AF1A9571F0FE7DA003EB744 /* FontFile.h */,
+				9AF1A9581F0FE7DA003EB744 /* FontFile.m */,
+				9AF1A9591F0FE7DA003EB744 /* MMType1Font.h */,
+				9AF1A95A1F0FE7DA003EB744 /* MMType1Font.m */,
+				9AF1A95B1F0FE7DA003EB744 /* pdfScannerCallbacks.mm */,
+				9AF1A95C1F0FE7DA003EB744 /* RenderingState.h */,
+				9AF1A95D1F0FE7DA003EB744 /* RenderingState.m */,
+				9AF1A95E1F0FE7DA003EB744 /* RenderingStateStack.h */,
+				9AF1A95F1F0FE7DA003EB744 /* RenderingStateStack.m */,
+				9AF1A9601F0FE7DA003EB744 /* Scanner2.h */,
+				9AF1A9611F0FE7DA003EB744 /* Scanner2.m */,
+				9AF1A9621F0FE7DA003EB744 /* Selection.h */,
+				9AF1A9631F0FE7DA003EB744 /* Selection.m */,
+				9AF1A9641F0FE7DA003EB744 /* SimpleFont.h */,
+				9AF1A9651F0FE7DA003EB744 /* SimpleFont.m */,
+				9AF1A9661F0FE7DA003EB744 /* StringDetector.h */,
+				9AF1A9671F0FE7DA003EB744 /* StringDetector.m */,
+				9AF1A9681F0FE7DA003EB744 /* StringDetectorDelegate.h */,
+				9AF1A9691F0FE7DA003EB744 /* TrueTypeFont.h */,
+				9AF1A96A1F0FE7DA003EB744 /* TrueTypeFont.m */,
+				9AF1A96B1F0FE7DA003EB744 /* Type0Font.h */,
+				9AF1A96C1F0FE7DA003EB744 /* Type0Font.m */,
+				9AF1A96D1F0FE7DA003EB744 /* Type1Font.h */,
+				9AF1A96E1F0FE7DA003EB744 /* Type1Font.m */,
+				9AF1A96F1F0FE7DA003EB744 /* Type3Font.h */,
+				9AF1A9701F0FE7DA003EB744 /* Type3Font.m */,
+			);
+			name = PDFCore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +350,7 @@
 					9A18A01C1F0DA0E50083BE77 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 38TT54W2TA;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					9A18A0301F0DA0E50083BE77 = {
@@ -235,9 +392,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AF1A9431F0FE7A7003EB744 /* pinkStatic.caf in Resources */,
+				9AF1A98C1F12B3D4003EB744 /* Demo in Resources */,
 				9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */,
 				9A18A0281F0DA0E50083BE77 /* Assets.xcassets in Resources */,
 				9A18A0261F0DA0E50083BE77 /* Main.storyboard in Resources */,
+				9AF1A93F1F0FE7A7003EB744 /* click.wav in Resources */,
+				9AF1A9421F0FE7A7003EB744 /* paper_touching.caf in Resources */,
+				9AF1A9411F0FE7A7003EB744 /* ding1.caf in Resources */,
+				9AF1A9441F0FE7A7003EB744 /* whiteStatic.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,8 +425,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A18A0231F0DA0E50083BE77 /* ViewController.swift in Sources */,
+				9AF1A9761F0FE7DA003EB744 /* Font.m in Sources */,
+				9AF1A9831F0FE7DA003EB744 /* Type0Font.m in Sources */,
+				9AF1A97D1F0FE7DA003EB744 /* RenderingStateStack.m in Sources */,
+				9AF1A9361F0ECABD003EB744 /* PDFModel.swift in Sources */,
+				9AF1A9341F0EC9DA003EB744 /* VRulerController.swift in Sources */,
+				9AF1A9301F0EC942003EB744 /* DocumentViewController.swift in Sources */,
+				9AF1A9851F0FE7DA003EB744 /* Type3Font.m in Sources */,
+				9AF1A97B1F0FE7DA003EB744 /* pdfScannerCallbacks.mm in Sources */,
+				9AF1A97E1F0FE7DA003EB744 /* Scanner2.m in Sources */,
+				9AF1A97A1F0FE7DA003EB744 /* MMType1Font.m in Sources */,
+				9AF1A97F1F0FE7DA003EB744 /* Selection.m in Sources */,
+				9AF1A9771F0FE7DA003EB744 /* FontCollection.m in Sources */,
+				9AF1A9821F0FE7DA003EB744 /* TrueTypeFont.m in Sources */,
+				9AF1A97C1F0FE7DA003EB744 /* RenderingState.m in Sources */,
+				9AF1A9711F0FE7DA003EB744 /* CIDFont.m in Sources */,
+				9AF1A9811F0FE7DA003EB744 /* StringDetector.m in Sources */,
+				9AF1A9801F0FE7DA003EB744 /* SimpleFont.m in Sources */,
+				9AF1A9751F0FE7DA003EB744 /* CompositeFont.m in Sources */,
+				9AF1A9731F0FE7DA003EB744 /* CIDType2Font.m in Sources */,
+				9AF1A9781F0FE7DA003EB744 /* FontDescriptor.m in Sources */,
+				9A18A0231F0DA0E50083BE77 /* MainViewController.swift in Sources */,
+				9AF1A9381F0ECAF8003EB744 /* MathFunctions.swift in Sources */,
 				9A18A0211F0DA0E50083BE77 /* AppDelegate.swift in Sources */,
+				9AF1A9791F0FE7DA003EB744 /* FontFile.m in Sources */,
+				9AF1A9841F0FE7DA003EB744 /* Type1Font.m in Sources */,
+				9AF1A9741F0FE7DA003EB744 /* CMap.m in Sources */,
+				9AF1A9321F0EC9A4003EB744 /* DocumentView.swift in Sources */,
+				9AF1A9721F0FE7DA003EB744 /* CIDType0Font.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,11 +606,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 38TT54W2TA;
 				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "STAAR_Reader_2016/STAAR_Reader_2016-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -430,11 +622,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 38TT54W2TA;
 				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "TEILab.STAAR-Reader-2016";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "STAAR_Reader_2016/STAAR_Reader_2016-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -516,6 +710,7 @@
 				9A18A0471F0DA0E50083BE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9A18A0481F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016Tests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +719,7 @@
 				9A18A04A1F0DA0E50083BE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9A18A04B1F0DA0E50083BE77 /* Build configuration list for PBXNativeTarget "STAAR_Reader_2016UITests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +728,7 @@
 				9A18A04D1F0DA0E50083BE77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

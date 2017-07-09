@@ -1,26 +1,123 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" colorMatched="YES" initialViewController="Wfm-u0-Rc2">
+    <device id="ipad12_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--MainViewController-->
+        <scene sceneID="8g7-Ee-WXN">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" id="Wfm-u0-Rc2" userLabel="MainViewController" customClass="MainViewController" customModule="STAAR_Reader_2016" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="C6F-X7-vPg" userLabel="mainView">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" id="b76-S4-bDQ" userLabel="vertRulerContainer">
+                                <rect key="frame" x="0.0" y="0.0" width="51" height="1366"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <segue destination="Vjh-3V-YSQ" kind="embed" id="WmE-hs-Rgn"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" id="L16-1i-qfy" userLabel="docAreaContainer">
+                                <rect key="frame" x="50" y="0.0" width="974" height="1366"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <segue destination="4Wr-T5-PpT" kind="embed" id="I5j-3U-YhA"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ym2-ro-R2W" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-249" y="-10"/>
+        </scene>
+        <!--DocAreaController-->
+        <scene sceneID="GTt-Cg-R7b">
+            <objects>
+                <viewController id="4Wr-T5-PpT" userLabel="DocAreaController" customClass="DocAreaController" customModule="STAAR_Reader_2016" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="4PV-sy-3oj" userLabel="mainDocView">
+                        <rect key="frame" x="0.0" y="0.0" width="974" height="1366"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <userGuides>
+                            <userLayoutGuide location="1269" affinity="minY"/>
+                            <userLayoutGuide location="932" affinity="minX"/>
+                            <userLayoutGuide location="70" affinity="minX"/>
+                        </userGuides>
+                        <subviews>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" id="e2w-wY-k5x" userLabel="DocView" customClass="DocView" customModule="STAAR_Reader_2016" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="974" height="1312"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6fp-Mw-WDz" userLabel="prevPageBtn">
+                                <rect key="frame" x="20" y="1321" width="118" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Previous Page">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="PrevPageBtn:" destination="4Wr-T5-PpT" eventType="touchUpInside" id="FNn-3A-KLo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Gk0-wI-beY" userLabel="nextPageBtn">
+                                <rect key="frame" x="793" y="1320" width="115" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Next Page">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="NxtPageBtn:" destination="4Wr-T5-PpT" eventType="touchUpInside" id="Juv-ff-vL5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="F8f-fY-8Om"/>
+                    <connections>
+                        <outlet property="DocView" destination="e2w-wY-k5x" id="NkR-Bb-Eg7"/>
+                        <outlet property="docView" destination="e2w-wY-k5x" id="ORa-h4-0Zd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lxY-kl-QNd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="980" y="-10"/>
+        </scene>
+        <!--VertRulerController-->
+        <scene sceneID="Zdz-ir-xqu">
+            <objects>
+                <viewController id="Vjh-3V-YSQ" userLabel="VertRulerController" customClass="VertRulerController" customModule="STAAR_Reader_2016" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="hTq-Na-WyI" userLabel="vertRuler">
+                        <rect key="frame" x="0.0" y="0.0" width="51" height="1366"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" playsSound="YES"/>
+                        </accessibility>
+                    </view>
+                    <connections>
+                        <outlet property="verticalRulerView" destination="hTq-Na-WyI" id="jOq-ms-zTP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SuA-QC-7lN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-249" y="1564"/>
         </scene>
     </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="ipad12_9.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>
