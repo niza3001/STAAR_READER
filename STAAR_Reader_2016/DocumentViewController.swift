@@ -39,7 +39,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     var currentWordID = 0
     var historyID = -1
     var historyOfHistoryID = -1
-    var rate: Float = 0.53
+    var rate: Float = 1.0
     var _click: Bool = false
     var wordClick = AVAudioPlayer()
     var touchLoc = CGPoint(x : 0,y : 0)
@@ -270,14 +270,17 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         debugPrint("time budget \(timeIneed)")
         debugPrint("timebudgetratio\(tBudgetRatio)")
         self.startTime = prevTimeStamp
-        switch tBudgetRatio {
-        case 0...0.9:
-            customRate = 0.9
-        case 0.9...1.2:
-            customRate = 1
-        default:
-            customRate = 1.1
-        }
+//        switch tBudgetRatio {
+//        case 0...0.9:
+//            customRate = 2
+//        case 0.9...1.2:
+//            customRate = 2
+//        default:
+//            customRate = 2
+//        }
+        if tBudgetRatio<1{customRate = 1}
+        else if tBudgetRatio>1 && tBudgetRatio<2 {customRate = tBudgetRatio}
+        else {customRate = 2}
         return customRate
     }
     
@@ -519,7 +522,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             
             index+=1
         }
-        let rect = CGRect(x: rectOrigin.x, y: rectOrigin.y, width: maxX-rectOrigin.x, height: maxY-rectOrigin.y)
+        let rect = CGRect(x: rectOrigin.x-25, y: rectOrigin.y-50, width: maxX-rectOrigin.x+50, height: maxY-rectOrigin.y+100)
         return rect
     }
     
