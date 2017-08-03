@@ -18,7 +18,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     //---------------------------------------------------------------------------------------
     @IBOutlet var docView: DocView!
     let filepath = (Bundle.main.path(forResource: "Demo", ofType: "pdf", inDirectory: "Demo"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     let initAudioPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     
@@ -53,7 +53,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     var EOLPlayer = AVAudioPlayer()
     var gutterFlag = 2
     var EOLWords: [String] = []
- 
+    var highlightMode: Bool = false
+    //enum readingMode
     
     //MARK: Actions
     //---------------------------------------------------------------------------------------
@@ -65,6 +66,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             self.docView.setNeedsDisplay()
             self.speechSynthesizer.speak(utterance)
             self.previousPagePressed = false
+            self.getEOLWords()
+            self.extractHotSpots()
         }
         else if (self.previousPagePressed == false){
             let phrase =  "Previous page"
@@ -88,6 +91,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             self.docView.setNeedsDisplay()
             self.speechSynthesizer.speak(utterance)
             self.nextPagePressed = false
+            self.getEOLWords()
+            self.extractHotSpots()
         }
         else if (self.nextPagePressed == false){
             let phrase =  "Next page"
@@ -218,7 +223,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         return ind
     }
     
-    // [0]ID,[1]WORD,[2]POSWX,[3]POSLY,[4]LENGTH,[5]LINE,[6]PAGE,[7]DURATION,[8]AUDIOSLOW,[9]AUDIONORMAL,[10]AUDIOFAST
+    // [0]ID,[1]WORD,[2]POSWX,[3]POSLY,[4]LENGTH,[5]LINE,[6]PAGE,[7]DURATION,[8]AUDIOFILE
     func calculateTimeBudget(touch: UITouch, id: Int) -> Float{
         var wordTimeBudget: Float = 0
         var length: Float = 0
@@ -246,23 +251,26 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         debugPrint("word start x position \(xStart)")
         debugPrint("whiteSpaceLength \(whiteSpaceLength)")
         let prevLoc = touch.previousLocation(in: self.docView)
-        let prevTimeStamp = touch.timestamp
+        //let prevTimeStamp = touch.timestamp
+        let prevTimeStamp = self.startTime
         let currLoc = touch.location(in: self.docView)
+        let currTimeStamp = touch.timestamp
         let distance =  currLoc.x - prevLoc.x
-        let timeTaken = prevTimeStamp - self.startTime
+        //let timeTaken = prevTimeStamp - self.startTime
+        let timeTaken = currTimeStamp - prevTimeStamp
         let velocity = Float(distance)/Float(timeTaken)
         let distanceLeft = Float(xEnd) - Float(currLoc.x)
         var timeIneed: Float = 0
         var tBudgetRatio: Float = 5
         if  distanceLeft>0{
             timeIneed = distanceLeft/velocity
-            tBudgetRatio = timeIneed/wordTimeBudget
+            tBudgetRatio = wordTimeBudget/timeIneed //timeIneed/wordTimeBudget
         }
         debugPrint("X2 \(currLoc)")
         debugPrint("X1 \(prevLoc)")
         debugPrint("X2-X1 \(distance)")
-        debugPrint("T2 \(prevTimeStamp)")
-        debugPrint("T1 \(startTime)")
+        debugPrint("T2 \(currTimeStamp)")
+        debugPrint("T1 \(prevTimeStamp)")
         debugPrint("T2-T1 \(timeTaken)")
         debugPrint("xEnd \(xEnd)")
         debugPrint("distance left to go \(Float(xEnd) - Float(currLoc.x))")
@@ -281,6 +289,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         if tBudgetRatio<1{customRate = 1}
         else if tBudgetRatio>1 && tBudgetRatio<2 {customRate = tBudgetRatio}
         else {customRate = 2}
+        self.startTime = currTimeStamp //+ TimeInterval((wordTimeBudget)/customRate)
         return customRate
     }
     
@@ -529,8 +538,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     func getEOLWords(){
         for word in self.dataArray {
             if NSString(string: word[6]).integerValue == self.docView.currentPage{
-                //if NSString(string: word[0]).integerValue<dataArray.count{
-                if self.dataArray[NSString(string: word[0]).integerValue][5] != word[5]{
+                if word==self.dataArray.last!{
+                    self.EOLWords.append(word[8].replacingOccurrences(of: "\r", with: ""))
+                    continue
+                }
+                else if self.dataArray[NSString(string: word[0]).integerValue][5] != word[5]{
                     self.EOLWords.append(word[8].replacingOccurrences(of: "\r", with: ""))
                 }
                 //}
@@ -547,7 +559,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(docView)
-        self.convertCSV(file: "Demo_12.9_Data")
+        self.convertCSV(file: "Demo_9.7_Data")
+        debugPrint("path of database file is \(self.datapath)")
+        debugPrint("path of pdf file is \(self.filepath)")
         self.dataArray.removeFirst()
         self.textRect = getTextAreaRect()
         self.getEOLWords()
@@ -573,11 +587,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             self.whiteSpacePlayer = try AVAudioPlayer.init(contentsOf: whiteSpaceNoiseURL!)
             speaker.delegate = self
             wordClick.volume = 1.0
-            whiteStaticPlayer.volume = 1.0
-            pinkStaticPlayer.volume = 1.0
-            EOLPlayer.volume = 1.0
+            whiteStaticPlayer.volume = 0.8
+            pinkStaticPlayer.volume = 0.8
+            EOLPlayer.volume = 0.8
             //EOLPlayer.play()
-            whiteSpacePlayer.volume = 1.0
+            whiteSpacePlayer.volume = 0.8
             //self.whiteStaticPlayer.numberOfLoops = -1
             //self.whiteStaticPlayer.play()
             //self.pinkStaticPlayer.numberOfLoops = -1
@@ -588,11 +602,33 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         }
         //debug
         self.extractHotSpots()
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleHighlightMode))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+//        let tripleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(cancelHighlight))
+//        tripleTapRecognizer.numberOfTapsRequired = 3
+//        doubleTapRecognizer.require(toFail: tripleTapRecognizer)
+        view.addGestureRecognizer(doubleTapRecognizer)
+//        view.addGestureRecognizer(tripleTapRecognizer)
     }
     
-    func handleOneTouch(At point: CGPoint){
+    func toggleHighlightMode(){
+        self.highlightMode = !(self.highlightMode)
+        debugPrint("*** Highlight mode is \(self.highlightMode.description).")
+        self.EOLPlayer.play()
+        
+        if self.highlightMode{
+            //self.tempHighlights.append(currentWor)
+        }
         
     }
+    
+    func cancelHighlight(){
+        self.highlightMode = false
+        debugPrint("*** Highlight mode is cancelled.")
+        self.EOLPlayer.play()
+    }
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let touchArray = Array((event?.allTouches)!)
@@ -602,13 +638,14 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             if let touch = touches.first {
                 if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
                     self.currentTouch = touch
+                    debugPrint("touch force is \(touch.force)")
                     self.startTime = (event!.timestamp)
                     self.touchLoc = touch.location(in: self.docView)
                     debugPrint("&first touch touchLoc is *** \(touchLoc)")
                     if self.words.count == 0 && self.speaker.isPlaying == false {
                         handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: touch)
-                        dequeueWord(Rate: 0.53)
+                        dequeueWord(Rate: self.rate)
                     }
                 }
                 else{
@@ -646,7 +683,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     if self.words.count == 0 && self.speaker.isPlaying == false {
                         handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: readingTouch)
-                        dequeueWord(Rate: 0.53)
+                        dequeueWord(Rate: self.rate)
                     }
                 }
                     
@@ -666,18 +703,14 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     if self.words.count == 0 && self.speaker.isPlaying == false {
                         handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: readingTouch)
-                        dequeueWord(Rate: 0.53)
+                        dequeueWord(Rate: self.rate)
                     }
                 }
                     
                 else{
                     self.whiteSpacePlayer.play()
                 }
-                
-                
             }
-            
-            
         }
         super.touchesBegan(touches, with: event)
     }
@@ -687,7 +720,15 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         
         if(touchArray.count == 1){
             if let touch = touches.first {
-                if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
+                if touch.location(in: self.docView).x<0 {
+                    self.whiteSpacePlayer.stop()
+                    if self.hotSpots.contains(touch.location(in: self.view).y){
+                        speechSynthesizer.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+                        //self.wordClick.play()
+                        //debugPrint("hit!")
+                    }
+                }
+                if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))) && touch.previousLocation(in: self.docView).x<touch.location(in: self.docView).x{
                     self.currentTouch = touch
                     self.touchLoc = touch.location(in: self.docView)
                     self.gutterFlag = self.amIstraying(touch: touch)
@@ -701,7 +742,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                         self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
                     }
                 }
-                else{
+                else if amITouchingWhiteSpace(touch: touch.location(in: self.view)) && touch.location(in: self.view).x>0{
                     self.whiteSpacePlayer.play()
                 }
                 

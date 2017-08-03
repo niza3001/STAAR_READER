@@ -18,7 +18,7 @@ class MainViewController: UIViewController {
     //--------------------------------------------------------------------------------------------------------------
     var docAreaController: DocAreaController!
     var vertRulerController: VertRulerController!
-    
+    var currentPage = 1
     
     //--------------------------------------------------------------------------------------------------------------
     //MARK: - Overridden Functions
@@ -50,10 +50,10 @@ class MainViewController: UIViewController {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches{
-            if VertRulerController.sharedInstance.view.frame.contains(touch.location(in: self.view)){
-            debugPrint("entering touch detetcted")
-            }
+        if self.currentPage != 1{
+            self.currentPage = self.docAreaController.docView.currentPage
+            self.vertRulerController.currentPage = self.currentPage
+            self.vertRulerController.extractHotSpots()
         }
     }
     

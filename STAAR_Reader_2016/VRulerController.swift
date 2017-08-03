@@ -10,61 +10,39 @@ import AVFoundation
 import UIKit
 
 
+
 class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     static let sharedInstance = VertRulerController()
     @IBOutlet var verticalRulerView: UIView!
     var rulerClick = AVAudioPlayer()
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
     var hotSpots: [CGFloat] = []
-    var  data:[[String:String]] = []
+    var data:[[String:String]] = []
     var dataArray = [[String]]()
-    var  columnTitles:[String] = []
-    var mySubViews: [customButton] = []
+    var columnTitles:[String] = []
+    var synth = AVSpeechSynthesizer()
+    var currentPage = 1
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.convertCSV(file: "Demo_12.9_Data")
+        self.convertCSV(file: "Demo_9.7_Data")
         self.extractHotSpots()
-        do {
-            debugPrint(hotSpots)
-            let clickURL = URL(fileURLWithPath: self.clickPath)
-            self.rulerClick = try AVAudioPlayer(contentsOf: clickURL)
-            self.rulerClick.volume = 1.0
-            self.rulerClick.delegate = self
-            self.rulerClick.prepareToPlay()
-            debugPrint("ruler loaded")
-            
-        } catch {
-            // couldn't load file :(
-        }
-        
-        self.createButtons()
-        
+//        do {
+//            debugPrint(hotSpots)
+//            let clickURL = URL(fileURLWithPath: self.clickPath)
+//            self.rulerClick = try AVAudioPlayer(contentsOf: clickURL)
+//            self.rulerClick.volume = 1.0
+//            self.rulerClick.delegate = self
+//            self.rulerClick.prepareToPlay()
+//            debugPrint("ruler loaded")
+//            
+//        } catch {
+//            // couldn't load file :(
+//        }
     }
-    
-    func createButtons(){
-        for hotspot in self.hotSpots{
-            let btn = customButton(frame: CGRect(x: 0, y: hotspot, width: self.view.frame.width, height: 2))
-            btn.backgroundColor = UIColor.clear
-            //btn.addTarget(self, action: #selector(buttonAction), for: .touchDragInside)
-            btn.tag = 1
-            self.mySubViews.append(btn)
-            self.view.addSubview(btn)
-        }
-    }
-    
-    
-    func buttonAction(sender: UIButton!) {
-        let btnsendtag: UIButton = sender
-        if btnsendtag.tag == 1 {
-            rulerClick.play()
-            rulerClick.prepareToPlay()
-        }
-    }
-    
     
     func readDataFromFile(file:String)-> String!{
         guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Demo")
@@ -116,15 +94,13 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
             Row.append(dataRow["PAGE"]!)
             Row.append(dataRow["DURATION"]!)
             Row.append(dataRow["AUDIOFILE\r"]!)
-            //            Row.append(dataRow["AUDIONORMAL"]!)
-            //            Row.append(dataRow["AUDIOFAST\r"]!)
             dataArray.append(Row)
         }
     }
     
     func extractHotSpots(){
         for dataRow in self.dataArray{
-            //            if  NSString(string: dataRow[6]).integerValue == docView.currentPage{
+            //if  NSString(string: dataRow[6]).integerValue == 1{
             let hotspot = NSString(string: dataRow[3]).floatValue
             self.hotSpots.append(CGFloat(hotspot))
         }//}
@@ -147,62 +123,23 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
             newHotSpot.append(hotspotnew)
         }
         self.hotSpots = newHotSpot
-        
-        //debugPrint("hotspots are \(self.hotSpots)")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //let myViews = self.view.subviews.filter{$0 is customButton}
-        for subview in self.mySubViews{
-            for touch in touches{
-                if subview.point(inside: touch.location(in: self.view), with: event){
-                    self.rulerClick.play()
-                    //subview.playClick()
-                    //VRAudio.sharedInstance.playSound(soundFileName: "click")
-                }
+        
+        if let touch = touches.first{
+            if self.hotSpots.contains(touch.location(in: self.view).y){
+                synth.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
             }
         }
-        
     }
     
-}
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first{
+            if self.hotSpots.contains(touch.location(in: self.view).y){
+                synth.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+            }
+        }
 
-class customButton: UIView, AVAudioPlayerDelegate {
-    
-    var rulerClick = AVAudioPlayer()
-    let clickURL = URL(fileURLWithPath: ((Bundle.main.path(forResource: "click", ofType: "wav"))! as String))
-    var soundID: SystemSoundID = 0
-    
-    
-    
-    override init(frame: CGRect){
-        super.init(frame: frame)
-        AudioServicesCreateSystemSoundID(self.clickURL as CFURL, &soundID)
-        //        do {
-        //            let clickURL = URL(fileURLWithPath: self.clickPath)
-        //            self.rulerClick = try AVAudioPlayer(contentsOf: clickURL)
-        //            self.rulerClick.volume = 1.0
-        //            self.rulerClick.delegate = self
-        //            self.rulerClick.prepareToPlay()
-        
-        //        } catch {
-        // couldn't load file :(
-        //        }
-        
-    }
-    
-    func playClick(){
-        AudioServicesPlaySystemSound(soundID)
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return self.frame.contains(point)
     }
 }
-
-
