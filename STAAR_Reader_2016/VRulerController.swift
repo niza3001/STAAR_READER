@@ -9,40 +9,28 @@
 import AVFoundation
 import UIKit
 
-
-
 class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     static let sharedInstance = VertRulerController()
     @IBOutlet var verticalRulerView: UIView!
     var rulerClick = AVAudioPlayer()
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
     var hotSpots: [CGFloat] = []
     var data:[[String:String]] = []
     var dataArray = [[String]]()
     var columnTitles:[String] = []
     var synth = AVSpeechSynthesizer()
     var currentPage = 1
+    var lastLineIndex = -1
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.convertCSV(file: "Demo_9.7_Data")
+        self.convertCSV(file: "Demo_12.9_Data")
         self.extractHotSpots()
-//        do {
-//            debugPrint(hotSpots)
-//            let clickURL = URL(fileURLWithPath: self.clickPath)
-//            self.rulerClick = try AVAudioPlayer(contentsOf: clickURL)
-//            self.rulerClick.volume = 1.0
-//            self.rulerClick.delegate = self
-//            self.rulerClick.prepareToPlay()
-//            debugPrint("ruler loaded")
-//            
-//        } catch {
-//            // couldn't load file :(
-//        }
-    }
+     }
+    
     
     func readDataFromFile(file:String)-> String!{
         guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Demo")
@@ -100,10 +88,9 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     func extractHotSpots(){
         for dataRow in self.dataArray{
-            //if  NSString(string: dataRow[6]).integerValue == 1{
             let hotspot = NSString(string: dataRow[3]).floatValue
             self.hotSpots.append(CGFloat(hotspot))
-        }//}
+        }
         
         var spot = self.hotSpots[0]
         var index = 1
@@ -126,20 +113,35 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         if let touch = touches.first{
-            if self.hotSpots.contains(touch.location(in: self.view).y){
-                synth.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+            for hotspot in self.hotSpots{
+                if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex {
+                    let utterance = AVSpeechUtterance(string: "line \(String(describing: hotSpots.index(of: hotspot)!))")
+                    utterance.rate = 0.8
+                    utterance.volume = 0.8
+                    synth.speak(utterance)
+                    lastLineIndex = hotSpots.index(of: hotspot)!
+                }
             }
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first{
-            if self.hotSpots.contains(touch.location(in: self.view).y){
-                synth.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+            for hotspot in self.hotSpots{
+                if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex {
+                    let utterance = AVSpeechUtterance(string: "line \(String(describing: hotSpots.index(of: hotspot)!))")
+                    utterance.rate = 0.8
+                    utterance.volume = 0.8
+                    synth.speak(utterance)
+                    lastLineIndex = hotSpots.index(of: hotspot)!
+                }
             }
         }
 
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastLineIndex = -1
     }
 }

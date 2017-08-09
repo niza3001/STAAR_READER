@@ -18,7 +18,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     //---------------------------------------------------------------------------------------
     @IBOutlet var docView: DocView!
     let filepath = (Bundle.main.path(forResource: "Demo", ofType: "pdf", inDirectory: "Demo"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     let initAudioPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     
@@ -559,7 +559,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(docView)
-        self.convertCSV(file: "Demo_9.7_Data")
+        self.convertCSV(file: "Demo_12.9_Data")
         debugPrint("path of database file is \(self.datapath)")
         debugPrint("path of pdf file is \(self.filepath)")
         self.dataArray.removeFirst()
@@ -806,11 +806,6 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                 else{
                     self.whiteSpacePlayer.play()
                 }
-//                
-//                else if (VertRulerController.sharedInstance.view.frame.contains(tempTouch1.location(in: self.view)))){
-//                    VertRulerController.sharedInstance.touchesMoved(touches: Set<UITouch>, with event: UIEvent?)
-//                }
-                
             }
             
             
