@@ -18,6 +18,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     //---------------------------------------------------------------------------------------
     @IBOutlet var docView: DocView!
     let filepath = (Bundle.main.path(forResource: "Demo", ofType: "pdf", inDirectory: "Demo"))! as String
+    //let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
     let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     let initAudioPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
@@ -54,6 +55,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     var gutterFlag = 2
     var EOLWords: [String] = []
     var highlightMode: Bool = false
+    var tempHighlights: [Int] = []
+    var pageHighlights: [[Int]] = []
+    var queryMode: Bool = false
     //enum readingMode
     
     //MARK: Actions
@@ -113,7 +117,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     //---------------------------------------------------------------------------------------
     // [0]ID,[1]WORD,[2]POSWX,[3]POSLY,[4]LENGTH,[5]LINE,[6]PAGE,[7]DURATION,[8]AUDIOSLOW,[9]AUDIONORMAL,[10]AUDIOFAST
     func handleTouchMoving(currentTouch: UITouch, currentLoc: CGPoint){
-        let currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        var currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        if self.gutterFlag==2{currentLineIndex+=1}
+        else if self.gutterFlag == -2{currentLineIndex-=1}
         let currentWordIndex = self.findNearestWordInd(line: currentLineIndex , loc: currentLoc) //x: currentLoc.x)
         if currentWordIndex != self.currentWordID {
             self.rate = calculateTimeBudget(touch: currentTouch, id: currentWordIndex)
@@ -142,14 +148,17 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         }
         
         //else if words[0] == clickPath { dequeueWord(Rate: self.rate) }
-        let currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        self.gutterFlag = self.amIstraying(touch: currentTouch)
+        debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
+        var currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        if self.gutterFlag==2{currentLineIndex+=1}
+        else if self.gutterFlag == -2{currentLineIndex-=1}
         let currentWordIndex = self.findNearestWordInd(line: currentLineIndex , loc: currentLoc) //x: currentLoc.x)
         self.rate = calculateTimeBudget(touch: currentTouch, id: currentWordIndex)
         debugPrint("I am handling return from play current ID is\(currentWordIndex)")
-        self.gutterFlag = self.amIstraying(touch: currentTouch)
-        debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
-        if currentWordIndex==0 {}
-        else if currentWordIndex != 0 && (currentWordIndex-prevID)>1 && 10>(currentWordIndex-prevID){
+        
+        if currentWordIndex==0 {} //touching space
+        else if currentWordIndex != 0 && (currentWordIndex-prevID)>1 && (currentWordIndex-prevID)<10{
             let i = currentWordIndex-self.prevID-1
             debugPrint("the number of clicks are \(i)")
             //for _ in 1...i{
@@ -158,7 +167,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             self.wordClick.numberOfLoops = i
             self.wordClick.prepareToPlay()
             self.wordClick.play()
-            self.prevID = currentWordIndex
+            self.prevID = currentWordIndex-1
             //dequeueWord(Rate: self.rate)
         }
         else {
@@ -173,7 +182,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     
     
     func handleTouchStationary(currentTouch: UITouch, currentLoc: CGPoint){
-        let currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        var currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
+        if self.gutterFlag==2{currentLineIndex+=1}
+        else if self.gutterFlag == -2{currentLineIndex-=1}
         debugPrint(currentLineIndex)
         let currentWordIndex = self.findNearestWordInd(line: currentLineIndex , loc: currentLoc) //x: currentLoc.x)
         debugPrint("I am handling stationary touch current ID is\(currentWordIndex)")
@@ -304,7 +315,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                 self.words.append(path)
                 self.prevID = id
             }
-            
+        }
+        if self.highlightMode && id != 0{
+            self.tempHighlights.append(id)
         }
     }
     
@@ -324,7 +337,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     }
     
     func dequeueWord(Rate: Float){
-        var wordURL: URL?
+        //var wordURL: URL?
         debugPrint("gutter flag is \(self.gutterFlag)")
         if self.words.count>0 {
             do {
@@ -336,17 +349,22 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                 else{
                     //debugPrint(words[0])
                     self.EOLPlay()
-                    wordURL = Bundle.main.url(forResource: self.words[0], withExtension: "aiff")
-                     debugPrint("@@@@@ word is \(self.words[0])")
-                    let wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Demo/Demo_AudioFiles")
-                    wordURL = URL(fileURLWithPath: wordPath!)
+                    //wordURL = Bundle.main.url(forResource: self.words[0], withExtension: "aiff")
+                     //debugPrint("@@@@@ word is \(self.words[0])")
+                    var wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Demo/Demo_AudioFiles")
+                    if self.highlightMode {
+                        wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Demo/Demo_HighlightedAudioFiles")
+                    }
+                    let wordURL = URL(fileURLWithPath: wordPath!)
                     
-                    debugPrint(wordURL as Any)
-                    self.speaker = try AVAudioPlayer(contentsOf: wordURL!)
+                    //debugPrint(wordURL as Any)
+                    self.speaker = try AVAudioPlayer(contentsOf: wordURL)
                     self.speaker.delegate = self
                     self.speaker.enableRate = true
                     self.speaker.volume = 1.0
                     self.speaker.rate = self.rate
+                    ///2BChanged
+                    //self.speaker.rate = 1.0
                     self.speaker.prepareToPlay()
                     debugPrint("playing")
                     self.speaker.play()
@@ -354,12 +372,13 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                         self.words.removeFirst()
                     }}//}
             } catch {
-                // couldn't load file :(
                 self.wordClick.play()
+                debugPrint("can't load file!")
+            }
+                // couldn't load file :(
+            
                 if self.words.count>0{
                     self.words.removeFirst()
-                    debugPrint("can't load file!")
-                }
             }
         }}
     
@@ -436,13 +455,21 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         let hotspot = self.hotSpots[prevLine-1]
         debugPrint("@@@ hotspot is \(hotspot)")
         debugPrint("@@@ abs(hotspot-currentLoc.y) is \(abs(hotspot-currentLoc.y))")
-        if currentLoc.y<prevLoc.y && currentLine==prevLine && abs(hotspot-currentLoc.y)>distStep {
+        if currentLoc.y<prevLoc.y && currentLine==prevLine && abs(hotspot-currentLoc.y)>distStep && abs(hotspot-currentLoc.y)<2*distStep {
             self.whiteStaticPlayer.play()
             return 1
         }
-        if currentLoc.y>prevLoc.y && currentLine==prevLine && abs(currentLoc.y-hotspot)>distStep {
+        if currentLoc.y<prevLoc.y && abs(hotspot-currentLoc.y)>2*distStep && abs(hotspot-currentLoc.y)<3*distStep {
+            self.whiteStaticPlayer.play()
+            return 2
+        }
+        if currentLoc.y>prevLoc.y && currentLine==prevLine && abs(currentLoc.y-hotspot)>distStep && abs(currentLoc.y-hotspot)<2*distStep {
             self.pinkStaticPlayer.play()
             return -1
+        }
+        if currentLoc.y>prevLoc.y && abs(currentLoc.y-hotspot)>2*distStep && abs(hotspot-currentLoc.y)<3*distStep{
+            self.pinkStaticPlayer.play()
+            return -2
         }
         else {
             self.pinkStaticPlayer.stop()
@@ -548,7 +575,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                 //}
             }
         }
-        debugPrint("EOL word ids are \(self.EOLWords)")
+        //debugPrint("EOL word ids are \(self.EOLWords)")
     }
     
     
@@ -559,9 +586,10 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(docView)
+        //self.convertCSV(file: "Demo_9.7_Data")
         self.convertCSV(file: "Demo_12.9_Data")
-        debugPrint("path of database file is \(self.datapath)")
-        debugPrint("path of pdf file is \(self.filepath)")
+        //debugPrint("path of database file is \(self.datapath)")
+        //debugPrint("path of pdf file is \(self.filepath)")
         self.dataArray.removeFirst()
         self.textRect = getTextAreaRect()
         self.getEOLWords()
@@ -600,26 +628,37 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         } catch {
             // couldn't load file :(
         }
-        //debug
         self.extractHotSpots()
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleHighlightMode))
         doubleTapRecognizer.numberOfTapsRequired = 2
-//        let tripleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(cancelHighlight))
-//        tripleTapRecognizer.numberOfTapsRequired = 3
-//        doubleTapRecognizer.require(toFail: tripleTapRecognizer)
         view.addGestureRecognizer(doubleTapRecognizer)
-//        view.addGestureRecognizer(tripleTapRecognizer)
+    }
+    
+    func finalizeHighlight(){
+        let arrangedHighlights = Array(Set(tempHighlights)).sorted()
+        self.pageHighlights.append(arrangedHighlights)
+        if pageHighlights.count > 0 {
+            pageHighlights = pageHighlights.sorted { ($0[0])<($1[0]) }
+        }
+        self.tempHighlights = []
     }
     
     func toggleHighlightMode(){
         self.highlightMode = !(self.highlightMode)
         debugPrint("*** Highlight mode is \(self.highlightMode.description).")
-        self.EOLPlayer.play()
-        
-        if self.highlightMode{
-            //self.tempHighlights.append(currentWor)
+        let highlightOnNotif = AVSpeechUtterance(string: "Highlight mode On")
+        let highlightOffNotif = AVSpeechUtterance(string: "Highlight mode Off")
+        highlightOnNotif.rate = 0.6
+        highlightOffNotif.rate = 0.6
+        if self.highlightMode {
+            speechSynthesizer.speak(highlightOnNotif)
+            self.tempHighlights.append(self.currentWordID)
         }
-        
+        else{
+            speechSynthesizer.speak(highlightOffNotif)
+            self.finalizeHighlight()
+            debugPrint(pageHighlights.debugDescription)
+        }
     }
     
     func cancelHighlight(){
@@ -638,13 +677,13 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             if let touch = touches.first {
                 if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
                     self.currentTouch = touch
-                    debugPrint("touch force is \(touch.force)")
+                    //debugPrint("touch force is \(touch.force)")
                     self.startTime = (event!.timestamp)
                     self.touchLoc = touch.location(in: self.docView)
                     debugPrint("&first touch touchLoc is *** \(touchLoc)")
                     if self.words.count == 0 && self.speaker.isPlaying == false {
-                        handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: touch)
+                        handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
                         dequeueWord(Rate: self.rate)
                     }
                 }
@@ -681,8 +720,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     self.touchLoc = readingTouch.location(in: self.docView)
                     debugPrint("&first touch touchLoc is *** \(touchLoc)")
                     if self.words.count == 0 && self.speaker.isPlaying == false {
-                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: readingTouch)
+                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         dequeueWord(Rate: self.rate)
                     }
                 }
@@ -701,8 +740,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     self.touchLoc = readingTouch.location(in: self.docView)
                     debugPrint("&first touch touchLoc is *** \(touchLoc)")
                     if self.words.count == 0 && self.speaker.isPlaying == false {
-                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         self.gutterFlag = self.amIstraying(touch: readingTouch)
+                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         dequeueWord(Rate: self.rate)
                     }
                 }

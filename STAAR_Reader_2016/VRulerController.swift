@@ -15,6 +15,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     @IBOutlet var verticalRulerView: UIView!
     var rulerClick = AVAudioPlayer()
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
+    //let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
     let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
     var hotSpots: [CGFloat] = []
     var data:[[String:String]] = []
@@ -27,6 +28,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.convertCSV(file: "Demo_9.7_Data")
         self.convertCSV(file: "Demo_12.9_Data")
         self.extractHotSpots()
      }
@@ -129,7 +131,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first{
             for hotspot in self.hotSpots{
-                if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex {
+                if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex && !(synth.isSpeaking){
                     let utterance = AVSpeechUtterance(string: "line \(String(describing: hotSpots.index(of: hotspot)!))")
                     utterance.rate = 0.8
                     utterance.volume = 0.8
@@ -143,5 +145,6 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastLineIndex = -1
+        synth.stopSpeaking(at: AVSpeechBoundary.immediate)
     }
 }
