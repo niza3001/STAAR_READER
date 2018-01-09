@@ -12,7 +12,7 @@ import CoreGraphics
 import AVFoundation
 
 
-class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
+class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     //MARK: Properties
     //---------------------------------------------------------------------------------------
@@ -58,7 +58,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     var tempHighlights: [Int] = []
     var pageHighlights: [[Int]] = []
     var queryMode: Bool = false
+    var readingTouchPointer : String? = nil
     //enum readingMode
+    var recordingSession : AVAudioSession!
+    var audioRecorder    :AVAudioRecorder!
+    var settings         = [String : Int]()
     
     //MARK: Actions
     //---------------------------------------------------------------------------------------
@@ -112,6 +116,10 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         }
     }
     
+    
+    @IBAction func recordBtn(_ sender: Any) {
+        
+    }
     
     //MARK: Functions
     //---------------------------------------------------------------------------------------
@@ -422,6 +430,22 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             print("No data in file")
         }
         
+//        if devSize == "9.7" {
+//            //            For 9.7 inch iPad
+//            x = rect.origin.x*(1.176 as CGFloat) + 1.041
+//            y = rect.origin.y*(-1.174 as CGFloat) + 942.7
+//            w = rect.width * 1.176
+//            h = rect.height * 1.174
+//        }
+//
+//        if devSize == "12.9" {
+//            //          For 12.9 inch iPad
+//            x = rect.origin.x*(1.593  as CGFloat) + 0.133
+//            y = rect.origin.y*(-1.594 as CGFloat) + 1288
+//            w = rect.width * 1.593
+//            h = rect.height * 1.594
+//        }
+        
         for dataRow in data{
             var Row: [String] = []
             Row.append(dataRow["ID"]!)
@@ -439,17 +463,17 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     
     func amIstraying(touch: UITouch)->Int{
         let distStep = (self.hotSpots[1] - self.hotSpots[0])/4
-        debugPrint("@@@ dist is \(distStep)")
+        //debugPrint("@@@ dist is \(distStep)")
         //debugPrint(dist)
         let currentLoc = touch.location(in: self.view)
-        debugPrint("@@@ currentLoc is \(currentLoc)")
+        //debugPrint("@@@ currentLoc is \(currentLoc)")
         let currentLine = self.findNearestLineInd(yTouch: currentLoc.y)
-        debugPrint("@@@ currentLine is \(currentLine)")
+        //debugPrint("@@@ currentLine is \(currentLine)")
         //debugPrint("&&&&&&& current y \(currentLoc.y)")
         let prevLoc = touch.previousLocation(in: self.view)
-        debugPrint("@@@ prevLoc is \(prevLoc)")
+        //debugPrint("@@@ prevLoc is \(prevLoc)")
         let prevLine = self.findNearestLineInd(yTouch: prevLoc.y)
-        debugPrint("@@@ prevLine is \(prevLine)")
+        //debugPrint("@@@ prevLine is \(prevLine)")
         //debugPrint("&&&&&&& prev y \(prevLoc.y)")
         //debugPrint("&&&&&&& dif \(currentLoc.y-prevLoc.y)")
         let hotspot = self.hotSpots[prevLine-1]
@@ -585,6 +609,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
     //---------------------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        //debugPrint("&&&& model name is \(UIDevice.current.modelName)")
         view.addSubview(docView)
         //self.convertCSV(file: "Demo_9.7_Data")
         self.convertCSV(file: "Demo_12.9_Data")
@@ -629,9 +654,92 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             // couldn't load file :(
         }
         self.extractHotSpots()
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleHighlightMode))
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTapRecognizer)
+        
+//        let singleFingerTripleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(minusone))
+//        singleFingerTripleTapRecognizer.numberOfTapsRequired = 3
+//        singleFingerTripleTapRecognizer.numberOfTouchesRequired = 1
+//        view.addGestureRecognizer(singleFingerTripleTapRecognizer)
+//        
+//        let singleFingerDoubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(one))
+//        singleFingerDoubleTapRecognizer.numberOfTapsRequired = 2
+//        singleFingerDoubleTapRecognizer.require(toFail: singleFingerTripleTapRecognizer)
+//        singleFingerDoubleTapRecognizer.numberOfTouchesRequired = 1
+//        view.addGestureRecognizer(singleFingerDoubleTapRecognizer)
+//        
+//        let doubleFingerTripleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(minustwo))
+//        doubleFingerTripleTapRecognizer.numberOfTapsRequired = 3
+//        doubleFingerTripleTapRecognizer.numberOfTouchesRequired = 2
+//        view.addGestureRecognizer(doubleFingerTripleTapRecognizer)
+//        
+//        let doubleFingerDoubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(two))
+//        doubleFingerDoubleTapRecognizer.numberOfTapsRequired = 2
+//        doubleFingerDoubleTapRecognizer.numberOfTouchesRequired = 2
+//        doubleFingerDoubleTapRecognizer.require(toFail: doubleFingerTripleTapRecognizer)
+//        view.addGestureRecognizer(doubleFingerDoubleTapRecognizer)
+        
+        
+//        let swipeUpRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(queryModeResolution))
+//        swipeUpRecognizer.direction = UISwipeGestureRecognizerDirection.up
+//        view.addGestureRecognizer(swipeUpRecognizer)
+//
+//        let swipeDownRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(queryModeResolution))
+//        swipeDownRecognizer.direction = UISwipeGestureRecognizerDirection.down
+//        view.addGestureRecognizer(swipeDownRecognizer)
+//        self.testFunction()
+    }
+    
+    func one(){
+        debugPrint("toggle highlight")
+    }
+    
+    func minusone(){
+        debugPrint("cancel highlight")
+    }
+    
+    func two(){
+        debugPrint("toggle note")
+    }
+    
+    func minustwo(){
+        debugPrint("cancel note")
+    }
+    
+    func queryModeResolution(gesture: UIGestureRecognizer){
+        if self.queryMode{
+            if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+                if swipeGesture.direction == UISwipeGestureRecognizerDirection.up{
+                    print("Swiped up")
+                    if self.highlightMode{
+                        self.finalizeHighlight()
+                        self.highlightMode = false
+                        self.queryMode = false
+                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Saved"))
+                    }
+                    else{
+                        tempHighlights.append(self.currentWordID)
+                        self.highlightMode = true
+                        self.queryMode = false
+                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight begin"))
+                    }
+                }
+                else if swipeGesture.direction == UISwipeGestureRecognizerDirection.down{
+                    print("Swiped down")
+                    if self.highlightMode{
+                        self.tempHighlights = []
+                        self.highlightMode = false
+                        self.queryMode = false
+                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
+                    }
+                    else{
+                        self.queryMode = false
+                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
+                    }
+                }
+                else{
+                    speechSynthesizer.speak(AVSpeechUtterance(string: "Please try again"))
+                }
+            }
+        }
     }
     
     func finalizeHighlight(){
@@ -643,21 +751,28 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         self.tempHighlights = []
     }
     
-    func toggleHighlightMode(){
-        self.highlightMode = !(self.highlightMode)
-        debugPrint("*** Highlight mode is \(self.highlightMode.description).")
-        let highlightOnNotif = AVSpeechUtterance(string: "Highlight mode On")
-        let highlightOffNotif = AVSpeechUtterance(string: "Highlight mode Off")
-        highlightOnNotif.rate = 0.6
-        highlightOffNotif.rate = 0.6
+    func toggleHighlightMode(){ // THIS NEEDS MODIFICATION
+//        self.highlightMode = !(self.highlightMode)
+//        debugPrint("*** Highlight mode is \(self.highlightMode.description).")
+//        let highlightOnNotif = AVSpeechUtterance(string: "Highlight mode On")
+//        let highlightOffNotif = AVSpeechUtterance(string: "Highlight mode Off")
+//        highlightOnNotif.rate = 0.6
+//        highlightOffNotif.rate = 0.6
+//        if self.highlightMode {
+//            speechSynthesizer.speak(highlightOnNotif)
+//            self.tempHighlights.append(self.currentWordID)
+//        }
+//        else{
+//            speechSynthesizer.speak(highlightOffNotif)
+//            self.finalizeHighlight()
+//            debugPrint(pageHighlights.debugDescription)
+//        }
+        self.queryMode = true
         if self.highlightMode {
-            speechSynthesizer.speak(highlightOnNotif)
-            self.tempHighlights.append(self.currentWordID)
+            speechSynthesizer.speak(AVSpeechUtterance(string: "Save or cancel highlight?"))
         }
-        else{
-            speechSynthesizer.speak(highlightOffNotif)
-            self.finalizeHighlight()
-            debugPrint(pageHighlights.debugDescription)
+        else {
+           speechSynthesizer.speak(AVSpeechUtterance(string: "Begin or cancel highlight?"))
         }
     }
     
@@ -667,14 +782,41 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         self.EOLPlayer.play()
     }
     
+    func testFunction(){
+        let fileName = "Test"
+        let dir = try? FileManager.default.url(for: .documentDirectory,
+                                               in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        // If the directory was found, we write a file to it and read it back
+        if let fileURL = dir?.appendingPathComponent(fileName).appendingPathExtension("csv") {
+            
+            debugPrint("File URL is \(fileURL)")
+            
+            // Write to the file named Test
+            let outString = "Write this text to the file,Write this text to the file"
+            do {
+                try outString.write(to: fileURL, atomically: true, encoding: .utf8)
+            } catch {
+                print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+            }
+            
+            // Then reading it back from the file
+            var inString = ""
+            do {
+                inString = try String(contentsOf: fileURL)
+            } catch {
+                print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+            }
+            print("Read from the file: \(inString)")
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let touchArray = Array((event?.allTouches)!)
-        //debugPrint("*&*&*& Touch radius is \(touchArray[0].majorRadius)")
         
         if(touchArray.count == 1){
-            if let touch = touches.first {
+            if let touch = touches.first{
                 if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
                     self.currentTouch = touch
                     //debugPrint("touch force is \(touch.force)")
@@ -714,6 +856,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             let secondPoint = tempTouch2.location(in: self.view)
             if firstPoint.x<secondPoint.x {
                 let readingTouch = tempTouch2
+                self.readingTouchPointer = String(format: "%p", tempTouch2)
                 if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
                     self.currentTouch = readingTouch
                     self.startTime = (event!.timestamp)
@@ -734,6 +877,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
             }
             else {
                 let readingTouch = tempTouch1
+                self.readingTouchPointer = String(format: "%p", tempTouch1)
                 if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
                     self.currentTouch = readingTouch
                     self.startTime = (event!.timestamp)
@@ -743,6 +887,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                         self.gutterFlag = self.amIstraying(touch: readingTouch)
                         handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
                         dequeueWord(Rate: self.rate)
+                        
                     }
                 }
                     
@@ -759,6 +904,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         
         if(touchArray.count == 1){
             if let touch = touches.first {
+                
+                if touch.force == touch.maximumPossibleForce {
+                    print("This is a force touch")
+                }
+                
                 if touch.location(in: self.docView).x<0 {
                     self.whiteSpacePlayer.stop()
                     if self.hotSpots.contains(touch.location(in: self.view).y){
@@ -787,9 +937,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                 
             }
         }
-            
+            //This is the part that needs to be modified with pointers
         else{
-            
+
             var tempTouch1 : UITouch = touchArray[0]
             var tempTouch2 : UITouch = touchArray[1]
             if touchArray[0].location(in: self.view).y>touchArray[1].location(in: self.view).y{
@@ -805,7 +955,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     tempTouch2 = touch
                 }
             }
-            
+
             let firstPoint = tempTouch1.location(in: self.view)
             let secondPoint = tempTouch2.location(in: self.view)
             if firstPoint.x<secondPoint.x {
@@ -846,8 +996,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
                     self.whiteSpacePlayer.play()
                 }
             }
-            
-            
+
+
         }
         
         
@@ -869,3 +1019,84 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate  {
         
     }
 }
+
+
+//struct Platform {
+//    static let isSimulator: Bool = {
+//        var isSim = false
+//        #if arch(i386) || arch(x86_64)
+//            isSim = true
+//        #endif
+//        return isSim
+//    }()
+//}
+
+//extension UIDevice {
+//
+//    var modelName: String {
+//        var systemInfo = utsname()
+//        uname(&systemInfo)
+//        let machineMirror = Mirror(reflecting: systemInfo.machine)
+//        let identifier = machineMirror.children.reduce("") { identifier, element in
+//            guard let value = element.value as? Int8, value != 0 else { return identifier }
+//            return identifier + String(UnicodeScalar(UInt8(value)))
+//        }
+//
+//        if Platform.isSimulator {
+//            var machineSwiftString : String = ""
+//
+//                if let dir = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] {
+//                    machineSwiftString = dir
+//
+//            return ("\(machineSwiftString)")
+//        }
+//        else {
+//        switch identifier {
+//        case "iPod5,1":                                 return "iPod Touch 5"
+//        case "iPod7,1":                                 return "iPod Touch 6"
+//        case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
+//        case "iPhone4,1":                               return "iPhone 4s"
+//        case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
+//        case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
+//        case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
+//        case "iPhone7,2":                               return "iPhone 6"
+//        case "iPhone7,1":                               return "iPhone 6 Plus"
+//        case "iPhone8,1":                               return "iPhone 6s"
+//        case "iPhone8,2":                               return "iPhone 6s Plus"
+//        case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
+//        case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
+//        case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
+//        case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air"
+//        case "iPad5,1", "iPad5,3", "iPad5,4":           return "iPad Air 2"
+//        case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad Mini"
+//        case "iPad4,4", "iPad4,5", "iPad4,6":           return "iPad Mini 2"
+//        case "iPad4,7", "iPad4,8", "iPad4,9":           return "iPad Mini 3"
+//        case "iPad5,1", "iPad5,2":                      return "iPad Mini 4"
+//        case "iPad6,7", "iPad6,8":                      return "iPad Pro"
+//        case "i386", "x86_64":                          return "Simulator"
+//        default:                                        return identifier
+//            }
+//        }
+//
+//    // for ipad pro 12.9 device
+//    public var isPadPro129: Bool {
+//        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
+//            && UIScreen.main.nativeBounds.size.height == 2732) {
+//            return true
+//        }
+//        return false
+//    }
+//
+//
+//
+//    // for ipad pro 10.5 device
+//    public var isPadPro105: Bool {
+//        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
+//            && UIScreen.main.nativeBounds.size.height == 2224) {
+//            return true
+//        }
+//        return false
+//    }
+//
+//    }
+
