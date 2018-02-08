@@ -14,11 +14,7 @@
 		9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A18A0291F0DA0E50083BE77 /* LaunchScreen.storyboard */; };
 		9A18A0361F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0351F0DA0E50083BE77 /* STAAR_Reader_2016Tests.swift */; };
 		9A18A0411F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */; };
-		9A21F3991F682708001DC37B /* introduction in Resources */ = {isa = PBXBuildFile; fileRef = 9A21F3941F682708001DC37B /* introduction */; };
-		9A21F39A1F682708001DC37B /* set3 in Resources */ = {isa = PBXBuildFile; fileRef = 9A21F3951F682708001DC37B /* set3 */; };
-		9A21F39B1F682708001DC37B /* set4 in Resources */ = {isa = PBXBuildFile; fileRef = 9A21F3961F682708001DC37B /* set4 */; };
-		9A21F39C1F682708001DC37B /* set1 in Resources */ = {isa = PBXBuildFile; fileRef = 9A21F3971F682708001DC37B /* set1 */; };
-		9A21F39D1F682708001DC37B /* set2 in Resources */ = {isa = PBXBuildFile; fileRef = 9A21F3981F682708001DC37B /* set2 */; };
+		9A6CDB5F202BD3E3003062BF /* Intro.BV.BF in Resources */ = {isa = PBXBuildFile; fileRef = 9A6CDB5E202BD3E3003062BF /* Intro.BV.BF */; };
 		9AF1A9301F0EC942003EB744 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A92F1F0EC942003EB744 /* DocumentViewController.swift */; };
 		9AF1A9321F0EC9A4003EB744 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9311F0EC9A4003EB744 /* DocumentView.swift */; };
 		9AF1A9341F0EC9DA003EB744 /* VRulerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9331F0EC9DA003EB744 /* VRulerController.swift */; };
@@ -50,7 +46,6 @@
 		9AF1A9831F0FE7DA003EB744 /* Type0Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A96C1F0FE7DA003EB744 /* Type0Font.m */; };
 		9AF1A9841F0FE7DA003EB744 /* Type1Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A96E1F0FE7DA003EB744 /* Type1Font.m */; };
 		9AF1A9851F0FE7DA003EB744 /* Type3Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF1A9701F0FE7DA003EB744 /* Type3Font.m */; };
-		9AF1A98C1F12B3D4003EB744 /* Demo in Resources */ = {isa = PBXBuildFile; fileRef = 9AF1A98B1F12B3D4003EB744 /* Demo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,11 +79,7 @@
 		9A18A03C1F0DA0E50083BE77 /* STAAR_Reader_2016UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STAAR_Reader_2016UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A18A0401F0DA0E50083BE77 /* STAAR_Reader_2016UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STAAR_Reader_2016UITests.swift; sourceTree = "<group>"; };
 		9A18A0421F0DA0E50083BE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A21F3941F682708001DC37B /* introduction */ = {isa = PBXFileReference; lastKnownFileType = folder; name = introduction; path = Resources/introduction; sourceTree = "<group>"; };
-		9A21F3951F682708001DC37B /* set3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = set3; path = Resources/set3; sourceTree = "<group>"; };
-		9A21F3961F682708001DC37B /* set4 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = set4; path = Resources/set4; sourceTree = "<group>"; };
-		9A21F3971F682708001DC37B /* set1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = set1; path = Resources/set1; sourceTree = "<group>"; };
-		9A21F3981F682708001DC37B /* set2 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = set2; path = Resources/set2; sourceTree = "<group>"; };
+		9A6CDB5E202BD3E3003062BF /* Intro.BV.BF */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Intro.BV.BF; path = Resources/Intro.BV.BF; sourceTree = "<group>"; };
 		9AF1A92F1F0EC942003EB744 /* DocumentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DocumentViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9AF1A9311F0EC9A4003EB744 /* DocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		9AF1A9331F0EC9DA003EB744 /* VRulerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VRulerController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -142,7 +133,6 @@
 		9AF1A96E1F0FE7DA003EB744 /* Type1Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Type1Font.m; path = Resources/PDFCore/Type1Font.m; sourceTree = "<group>"; };
 		9AF1A96F1F0FE7DA003EB744 /* Type3Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Type3Font.h; path = Resources/PDFCore/Type3Font.h; sourceTree = "<group>"; };
 		9AF1A9701F0FE7DA003EB744 /* Type3Font.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Type3Font.m; path = Resources/PDFCore/Type3Font.m; sourceTree = "<group>"; };
-		9AF1A98B1F12B3D4003EB744 /* Demo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Demo; path = Resources/Demo; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,13 +221,8 @@
 		9AF1A9451F0FE7B9003EB744 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9A21F3981F682708001DC37B /* set2 */,
-				9A21F3971F682708001DC37B /* set1 */,
-				9A21F3961F682708001DC37B /* set4 */,
-				9A21F3951F682708001DC37B /* set3 */,
-				9A21F3941F682708001DC37B /* introduction */,
+				9A6CDB5E202BD3E3003062BF /* Intro.BV.BF */,
 				9AF1A9861F0FE800003EB744 /* PDFCore */,
-				9AF1A98B1F12B3D4003EB744 /* Demo */,
 				9AF1A9391F0FE7A7003EB744 /* click.wav */,
 				9AF1A93B1F0FE7A7003EB744 /* ding1.caf */,
 				9AF1A93C1F0FE7A7003EB744 /* paper_touching.caf */,
@@ -407,20 +392,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A21F39B1F682708001DC37B /* set4 in Resources */,
-				9A21F3991F682708001DC37B /* introduction in Resources */,
 				9AF1A9431F0FE7A7003EB744 /* pinkStatic.caf in Resources */,
-				9AF1A98C1F12B3D4003EB744 /* Demo in Resources */,
 				9A18A02B1F0DA0E50083BE77 /* LaunchScreen.storyboard in Resources */,
 				9A18A0281F0DA0E50083BE77 /* Assets.xcassets in Resources */,
 				9A18A0261F0DA0E50083BE77 /* Main.storyboard in Resources */,
 				9AF1A93F1F0FE7A7003EB744 /* click.wav in Resources */,
+				9A6CDB5F202BD3E3003062BF /* Intro.BV.BF in Resources */,
 				9AF1A9421F0FE7A7003EB744 /* paper_touching.caf in Resources */,
-				9A21F39A1F682708001DC37B /* set3 in Resources */,
-				9A21F39D1F682708001DC37B /* set2 in Resources */,
 				9AF1A9411F0FE7A7003EB744 /* ding1.caf in Resources */,
 				9AF1A9441F0FE7A7003EB744 /* whiteStatic.caf in Resources */,
-				9A21F39C1F682708001DC37B /* set1 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,7 +614,7 @@
 				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = testSTAAR;
+				PRODUCT_BUNDLE_IDENTIFIER = IBVBFSTAAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "STAAR_Reader_2016/STAAR_Reader_2016-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -652,7 +632,7 @@
 				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = testSTAAR;
+				PRODUCT_BUNDLE_IDENTIFIER = IBVBFSTAAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "STAAR_Reader_2016/STAAR_Reader_2016-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -779,7 +759,7 @@
 				INFOPLIST_FILE = STAAR_Reader_2016/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = testSTAAR;
+				PRODUCT_BUNDLE_IDENTIFIER = IBVBFSTAAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "STAAR_Reader_2016/STAAR_Reader_2016-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

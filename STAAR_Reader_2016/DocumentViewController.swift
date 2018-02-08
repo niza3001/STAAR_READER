@@ -17,9 +17,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     //MARK: Properties
     //---------------------------------------------------------------------------------------
     @IBOutlet var docView: DocView!
-    let filepath = (Bundle.main.path(forResource: "Demo", ofType: "pdf", inDirectory: "Demo"))! as String
-    //let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    let filepath = (Bundle.main.path(forResource: "Intro.BV.BF", ofType: "pdf", inDirectory: "Intro.BV.BF"))! as String
+    //let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_9.7_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
+    let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_12.9_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     let initAudioPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     
@@ -63,6 +63,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     var recordingSession : AVAudioSession!
     var audioRecorder    :AVAudioRecorder!
     var settings         = [String : Int]()
+    var uuidTouch = ""
+    var fingers = [String?](repeating: nil, count:1)
+    var noteName: String = ""
+    var EOPFlag: Bool = true
+    let EOPUtterance = AVSpeechUtterance(string: "End of page")
     
     //MARK: Actions
     //---------------------------------------------------------------------------------------
@@ -117,8 +122,28 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     
-    @IBAction func recordBtn(_ sender: Any) {
-        
+//    @IBAction func recordBtn(_ sender: Any) {
+//
+//    }
+    
+    @IBOutlet weak var btnAudioRecord: UIButton!
+    
+    @IBAction func click_AudioRecord(_ sender: AnyObject) {
+            if !audioRecorder.isRecording {
+                self.btnAudioRecord.setTitle("Stop Record", for: UIControlState.normal)
+                self.btnAudioRecord.backgroundColor = UIColor.red
+                let phrase = "Recording"
+                let utterance = AVSpeechUtterance(string: phrase)
+                self.speechSynthesizer.speak(utterance)
+                self.startRecording()
+            } else if audioRecorder.isRecording {
+                self.btnAudioRecord.setTitle("Record", for: UIControlState.normal)
+                self.btnAudioRecord.backgroundColor = UIColor.gray
+                self.finishRecording(success: true)
+                let phrase = "Saving"
+                let utterance = AVSpeechUtterance(string: phrase)
+                self.speechSynthesizer.speak(utterance)
+                }
     }
     
     //MARK: Functions
@@ -143,7 +168,13 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             //dequeueWord(Rate: self.rate)
         }
         self.gutterFlag = self.amIstraying(touch: currentTouch)
-        debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
+        //debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
+    }
+    
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            finishRecording(success: false)
+        }
     }
     
     
@@ -157,18 +188,18 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         //else if words[0] == clickPath { dequeueWord(Rate: self.rate) }
         self.gutterFlag = self.amIstraying(touch: currentTouch)
-        debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
+        //debugPrint("@@@ gutterFlag is \(self.gutterFlag)")
         var currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
         if self.gutterFlag==2{currentLineIndex+=1}
         else if self.gutterFlag == -2{currentLineIndex-=1}
         let currentWordIndex = self.findNearestWordInd(line: currentLineIndex , loc: currentLoc) //x: currentLoc.x)
         self.rate = calculateTimeBudget(touch: currentTouch, id: currentWordIndex)
-        debugPrint("I am handling return from play current ID is\(currentWordIndex)")
+        //debugPrint("I am handling return from play current ID is\(currentWordIndex)")
         
         if currentWordIndex==0 {} //touching space
         else if currentWordIndex != 0 && (currentWordIndex-prevID)>1 && (currentWordIndex-prevID)<10{
             let i = currentWordIndex-self.prevID-1
-            debugPrint("the number of clicks are \(i)")
+            //debugPrint("the number of clicks are \(i)")
             //for _ in 1...i{
             //self.enqueueClick(id: currentWordIndex)
             //self.currentWordID+=1
@@ -184,7 +215,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             enqueueWord(id: currentWordIndex)
             
         }
-        debugPrint(self.rate)
+        //debugPrint(self.rate)
         dequeueWord(Rate: self.rate)
     }
     
@@ -193,9 +224,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         var currentLineIndex = self.findNearestLineInd(yTouch: currentLoc.y)
         if self.gutterFlag==2{currentLineIndex+=1}
         else if self.gutterFlag == -2{currentLineIndex-=1}
-        debugPrint(currentLineIndex)
+        //debugPrint(currentLineIndex)
         let currentWordIndex = self.findNearestWordInd(line: currentLineIndex , loc: currentLoc) //x: currentLoc.x)
-        debugPrint("I am handling stationary touch current ID is\(currentWordIndex)")
+        //debugPrint("I am handling stationary touch current ID is\(currentWordIndex)")
         self.enqueueWord(id: currentWordIndex)
         
     }
@@ -213,7 +244,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 ind = self.hotSpots.index(of: hotspot)!
             }}
         //debugPrint("current line index is \(ind)")
-        return ind+1
+        if self.gutterFlag == 2 {return ind}
+        else if self.gutterFlag == -2 {return ind+2}
+        else {return ind+1}
     }
     
     func amITouchingWhiteSpace(touch: CGPoint)->Bool{
@@ -265,10 +298,10 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 whiteSpaceLength = nextWordStart - xEnd
             }
         }
-        debugPrint("word time budget T total \(wordTimeBudget)")
-        debugPrint("word length X total \(length)")
-        debugPrint("word start x position \(xStart)")
-        debugPrint("whiteSpaceLength \(whiteSpaceLength)")
+        //debugPrint("word time budget T total \(wordTimeBudget)")
+        //debugPrint("word length X total \(length)")
+        //debugPrint("word start x position \(xStart)")
+        //debugPrint("whiteSpaceLength \(whiteSpaceLength)")
         let prevLoc = touch.previousLocation(in: self.docView)
         //let prevTimeStamp = touch.timestamp
         let prevTimeStamp = self.startTime
@@ -285,17 +318,17 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             timeIneed = distanceLeft/velocity
             tBudgetRatio = wordTimeBudget/timeIneed //timeIneed/wordTimeBudget
         }
-        debugPrint("X2 \(currLoc)")
-        debugPrint("X1 \(prevLoc)")
-        debugPrint("X2-X1 \(distance)")
-        debugPrint("T2 \(currTimeStamp)")
-        debugPrint("T1 \(prevTimeStamp)")
-        debugPrint("T2-T1 \(timeTaken)")
-        debugPrint("xEnd \(xEnd)")
-        debugPrint("distance left to go \(Float(xEnd) - Float(currLoc.x))")
-        debugPrint("Velocity \(velocity)")
-        debugPrint("time budget \(timeIneed)")
-        debugPrint("timebudgetratio\(tBudgetRatio)")
+//        debugPrint("X2 \(currLoc)")
+//        debugPrint("X1 \(prevLoc)")
+//        debugPrint("X2-X1 \(distance)")
+//        debugPrint("T2 \(currTimeStamp)")
+//        debugPrint("T1 \(prevTimeStamp)")
+//        debugPrint("T2-T1 \(timeTaken)")
+//        debugPrint("xEnd \(xEnd)")
+//        debugPrint("distance left to go \(Float(xEnd) - Float(currLoc.x))")
+//        debugPrint("Velocity \(velocity)")
+//        debugPrint("time budget \(timeIneed)")
+//        debugPrint("timebudgetratio\(tBudgetRatio)")
         self.startTime = prevTimeStamp
 //        switch tBudgetRatio {
 //        case 0...0.9:
@@ -318,7 +351,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         for dataRow in self.dataArray{
             if dataRow[0] == "\(id)" && self.prevID != id{
                 let path = dataRow[8].replacingOccurrences(of: "\r", with: "")
-                debugPrint("path is \(path)")
+                //debugPrint("path is \(path)")
                 //let word = dataRow[1]
                 self.words.append(path)
                 self.prevID = id
@@ -341,12 +374,17 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     func EOLPlay(){
         if self.EOLWords.contains(self.words[0]){
             self.EOLPlayer.play()
+            if self.words[0] == self.EOLWords.last{
+                //speechSynthesizer.l
+                self.EOPFlag = true
+            }
         }
+        
     }
     
     func dequeueWord(Rate: Float){
         //var wordURL: URL?
-        debugPrint("gutter flag is \(self.gutterFlag)")
+        //debugPrint("gutter flag is \(self.gutterFlag)")
         if self.words.count>0 {
             do {
                 if words[0] == clickPath {
@@ -359,9 +397,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                     self.EOLPlay()
                     //wordURL = Bundle.main.url(forResource: self.words[0], withExtension: "aiff")
                      //debugPrint("@@@@@ word is \(self.words[0])")
-                    var wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Demo/Demo_AudioFiles")
+                    var wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Intro.BV.BF/Intro.BV.BF_AudioFiles")
                     if self.highlightMode {
-                        wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Demo/Demo_HighlightedAudioFiles")
+                        wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Intro.BV.BF/Intro.BV.BF_HighlightedAudioFiles")
                     }
                     let wordURL = URL(fileURLWithPath: wordPath!)
                     
@@ -370,18 +408,26 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                     self.speaker.delegate = self
                     self.speaker.enableRate = true
                     self.speaker.volume = 1.0
-                    self.speaker.rate = self.rate
                     ///2BChanged
-                    //self.speaker.rate = 1.0
+                    self.speaker.rate = self.rate
+                    if self.docView.currentPage == 3{
+                        self.speaker.rate = 1
+                    }
                     self.speaker.prepareToPlay()
-                    debugPrint("playing")
+                    //debugPrint("playing")
                     self.speaker.play()
+                    
+                    if self.EOPFlag == true{
+                        self.EOPUtterance.volume = 0.3
+                        self.speechSynthesizer.speak(EOPUtterance)
+                        self.EOPFlag = false
+                    }
                     if self.words.count>0{
                         self.words.removeFirst()
                     }}//}
             } catch {
                 self.wordClick.play()
-                debugPrint("can't load file!")
+                //debugPrint("can't load file!")
             }
                 // couldn't load file :(
             
@@ -392,7 +438,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     
     func readDataFromFile(file:String)-> String!{
-        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Demo")
+        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Intro.BV.BF")
             else {
                 return nil
         }
@@ -448,7 +494,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         for dataRow in data{
             var Row: [String] = []
-            Row.append(dataRow["ID"]!)
+            Row.append(dataRow["id"]!)
             Row.append(dataRow["WORD"]!)
             Row.append(dataRow["POSWX"]!)
             Row.append(dataRow["POSLY"]!)
@@ -477,22 +523,26 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         //debugPrint("&&&&&&& prev y \(prevLoc.y)")
         //debugPrint("&&&&&&& dif \(currentLoc.y-prevLoc.y)")
         let hotspot = self.hotSpots[prevLine-1]
-        debugPrint("@@@ hotspot is \(hotspot)")
-        debugPrint("@@@ abs(hotspot-currentLoc.y) is \(abs(hotspot-currentLoc.y))")
+        //debugPrint("@@@ hotspot is \(hotspot)")
+        //debugPrint("@@@ abs(hotspot-currentLoc.y) is \(abs(hotspot-currentLoc.y))")
         if currentLoc.y<prevLoc.y && currentLine==prevLine && abs(hotspot-currentLoc.y)>distStep && abs(hotspot-currentLoc.y)<2*distStep {
             self.whiteStaticPlayer.play()
             return 1
         }
+        //straying to prev line
         if currentLoc.y<prevLoc.y && abs(hotspot-currentLoc.y)>2*distStep && abs(hotspot-currentLoc.y)<3*distStep {
             self.whiteStaticPlayer.play()
+            //self.wordClick.play()
             return 2
         }
         if currentLoc.y>prevLoc.y && currentLine==prevLine && abs(currentLoc.y-hotspot)>distStep && abs(currentLoc.y-hotspot)<2*distStep {
             self.pinkStaticPlayer.play()
             return -1
         }
+        //straying to next line
         if currentLoc.y>prevLoc.y && abs(currentLoc.y-hotspot)>2*distStep && abs(hotspot-currentLoc.y)<3*distStep{
             self.pinkStaticPlayer.play()
+            //self.wordClick.play()
             return -2
         }
         else {
@@ -504,9 +554,10 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        debugPrint("audioPlayerDidFinishPlaying")
-        if player.isPlaying == false {
-            self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)}
+        //debugPrint("audioPlayerDidFinishPlaying")
+//        if player.isPlaying == false {
+//            debugPrint("I got here from audiofinished")
+//            self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)}
     }
     
     func SegmentMake(_ x1: CGFloat, _ y1: CGFloat, _ x2: CGFloat, _ y2: CGFloat) -> segment {
@@ -591,6 +642,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             if NSString(string: word[6]).integerValue == self.docView.currentPage{
                 if word==self.dataArray.last!{
                     self.EOLWords.append(word[8].replacingOccurrences(of: "\r", with: ""))
+                    //self.EOPWord.append(word[8].replacingOccurrences(of: "\r", with: ""))
                     continue
                 }
                 else if self.dataArray[NSString(string: word[0]).integerValue][5] != word[5]{
@@ -599,7 +651,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 //}
             }
         }
-        //debugPrint("EOL word ids are \(self.EOLWords)")
+        debugPrint("EOL word ids are \(self.EOLWords)")
+        debugPrint("EOL  words extracted correctly")
     }
     
     
@@ -609,16 +662,21 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     //---------------------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //debugPrint("&&&& model name is \(UIDevice.current.modelName)")
         view.addSubview(docView)
-        //self.convertCSV(file: "Demo_9.7_Data")
-        self.convertCSV(file: "Demo_12.9_Data")
+        //view.addSubview(docView)
+        //self.convertCSV(file: "Intro.BV.BF_9.7_Data")
+        self.convertCSV(file: "Intro.BV.BF_12.9_Data")
         //debugPrint("path of database file is \(self.datapath)")
         //debugPrint("path of pdf file is \(self.filepath)")
         self.dataArray.removeFirst()
         self.textRect = getTextAreaRect()
         self.getEOLWords()
-        //      self.view.addSubview(k)
+        self.btnAudioRecord.setTitle("Record", for: UIControlState.normal)
+        self.btnAudioRecord.backgroundColor = UIColor.gray
+        self.btnAudioRecord.isEnabled = false
+        //      self.view.addSuBView(k)
         //        debugPrint("textrect is \(textRect)")
         //        debugPrint("number of data array elements \(self.dataArray.count)")
         //        debugPrint("first element id \(self.dataArray[0][0]) \(self.dataArray[0][1])")
@@ -640,6 +698,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             self.whiteSpacePlayer = try AVAudioPlayer.init(contentsOf: whiteSpaceNoiseURL!)
             speaker.delegate = self
             wordClick.volume = 1.0
+            //speaker.volume = 1.0
             whiteStaticPlayer.volume = 0.8
             pinkStaticPlayer.volume = 0.8
             EOLPlayer.volume = 0.8
@@ -660,12 +719,12 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
 //        singleFingerTripleTapRecognizer.numberOfTouchesRequired = 1
 //        view.addGestureRecognizer(singleFingerTripleTapRecognizer)
 //        
-//        let singleFingerDoubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(one))
-//        singleFingerDoubleTapRecognizer.numberOfTapsRequired = 2
-//        singleFingerDoubleTapRecognizer.require(toFail: singleFingerTripleTapRecognizer)
-//        singleFingerDoubleTapRecognizer.numberOfTouchesRequired = 1
-//        view.addGestureRecognizer(singleFingerDoubleTapRecognizer)
-//        
+        let singleFingerDoubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(takeSpatialNote))
+        singleFingerDoubleTapRecognizer.numberOfTapsRequired = 2
+        //singleFingerDoubleTapRecognizer.require(toFail: singleFingerTripleTapRecognizer)
+        singleFingerDoubleTapRecognizer.numberOfTouchesRequired = 1
+        //view.addGestureRecognizer(singleFingerDoubleTapRecognizer)
+//
 //        let doubleFingerTripleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(minustwo))
 //        doubleFingerTripleTapRecognizer.numberOfTapsRequired = 3
 //        doubleFingerTripleTapRecognizer.numberOfTouchesRequired = 2
@@ -686,101 +745,209 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
 //        swipeDownRecognizer.direction = UISwipeGestureRecognizerDirection.down
 //        view.addGestureRecognizer(swipeDownRecognizer)
 //        self.testFunction()
-    }
-    
-    func one(){
-        debugPrint("toggle highlight")
-    }
-    
-    func minusone(){
-        debugPrint("cancel highlight")
-    }
-    
-    func two(){
-        debugPrint("toggle note")
-    }
-    
-    func minustwo(){
-        debugPrint("cancel note")
-    }
-    
-    func queryModeResolution(gesture: UIGestureRecognizer){
-        if self.queryMode{
-            if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-                if swipeGesture.direction == UISwipeGestureRecognizerDirection.up{
-                    print("Swiped up")
-                    if self.highlightMode{
-                        self.finalizeHighlight()
-                        self.highlightMode = false
-                        self.queryMode = false
-                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Saved"))
+        
+        recordingSession = AVAudioSession.sharedInstance()
+        do {
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession.setActive(true)
+            recordingSession.requestRecordPermission() { [unowned self] allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        ///print("Allow")
+                    } else {
+                        //print("Dont Allow")
                     }
-                    else{
-                        tempHighlights.append(self.currentWordID)
-                        self.highlightMode = true
-                        self.queryMode = false
-                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight begin"))
-                    }
-                }
-                else if swipeGesture.direction == UISwipeGestureRecognizerDirection.down{
-                    print("Swiped down")
-                    if self.highlightMode{
-                        self.tempHighlights = []
-                        self.highlightMode = false
-                        self.queryMode = false
-                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
-                    }
-                    else{
-                        self.queryMode = false
-                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
-                    }
-                }
-                else{
-                    speechSynthesizer.speak(AVSpeechUtterance(string: "Please try again"))
                 }
             }
+        } catch {
+            print("failed to record!")
+        }
+        
+        // Audio Settings
+        
+        settings = [
+            AVFormatIDKey:Int(kAudioFormatAppleIMA4),
+            AVSampleRateKey:44100,
+            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
+            AVLinearPCMBitDepthKey:16,
+            AVEncoderAudioQualityKey:AVAudioQuality.max.rawValue
+
+            
+            //AVFormatIDKey: Int(kAudioFileAIFFType),
+            //AVSampleRateKey: 12000,
+            //AVNumberOfChannelsKey: 1,
+            //AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+        
+        //audioRecorder = AVAudioRecorder(url: self.directoryURL() as URL, settings: settings)
+        do {
+            audioRecorder = try AVAudioRecorder(url: self.directoryURL() as URL,
+                                                settings: settings)
+            audioRecorder.delegate = self
+            audioRecorder.prepareToRecord()
+        } catch {
+            print("Error: \(error)")
+            debugPrint("Audio Recorder Init Fail")
+        }
+        
+        
+        
+    }
+    
+    func takeSpatialNote(){
+        //debugPrint("toggle highlight")
+        if !audioRecorder.isRecording {
+            self.btnAudioRecord.setTitle("Stop Record", for: UIControlState.normal)
+            self.btnAudioRecord.backgroundColor = UIColor.red
+            let phrase = "Recording"
+            let utterance = AVSpeechUtterance(string: phrase)
+            self.speechSynthesizer.speak(utterance)
+            self.startRecording()
+        } else if audioRecorder.isRecording {
+            self.btnAudioRecord.setTitle("Record", for: UIControlState.normal)
+            self.btnAudioRecord.backgroundColor = UIColor.gray
+            self.finishRecording(success: true)
+            //self.saveNote()
+            let phrase = "Stop Record"
+            let utterance = AVSpeechUtterance(string: phrase)
+            self.speechSynthesizer.speak(utterance)
         }
     }
     
-    func finalizeHighlight(){
-        let arrangedHighlights = Array(Set(tempHighlights)).sorted()
-        self.pageHighlights.append(arrangedHighlights)
-        if pageHighlights.count > 0 {
-            pageHighlights = pageHighlights.sorted { ($0[0])<($1[0]) }
-        }
-        self.tempHighlights = []
-    }
+//    func saveNote(){
+//        debugPrint("saving highlight")
+//        var CSVHeader = "id, fileName\n"
+//        var dataString = "\(self.currentWordID),\(self.noteName)\n"
+//        let fileManager = FileManager.default
+//
+//        // Check if file exists, given its path
+//        guard let writePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return }
+//        try? FileManager.default.createDirectory(atPath: writePath.path)
+//        let file = writePath.appendingPathComponent("notes.csv")
+//
+//        if fileManager.fileExists(atPath: String(describing: noteCSVURL)) {
+//            print("File exists")
+//            do {
+//                let fileHandle = try FileHandle(forWritingTo: noteCSVURL)
+//                fileHandle.seekToEndOfFile()
+//                fileHandle.write(dataString.data(using: .utf8)!)
+//                fileHandle.closeFile()
+//            } catch {
+//                print("Error writing to file \(error)")
+//            }
+//        } else {
+//            print("File not found")
+//
+//            do{
+//                try? CSVHeader.write(to: file, atomically: false, encoding: String.Encoding.utf8)
+//                //try .write(String(describing: noteCSVURL))
+//                //            return true
+//            } catch{
+//                //            return false
+//            }
+//            do {
+//                let fileHandle = try FileHandle(forWritingTo: noteCSVURL)
+//                fileHandle.seekToEndOfFile()
+//                fileHandle.write(dataString.data(using: .utf8)!)
+//                fileHandle.closeFile()
+//            } catch {
+//                print("Error writing to file \(error)")
+//            }
+//
+//        }
+////        do{
+////            try CSVText.write(toFile: ParentDir + "\(documentName)_data.csv", atomically: true, encoding: String.Encoding.utf8 )
+////            //            return true
+////        } catch{
+////            //            return false
+////        }
+//    }
     
-    func toggleHighlightMode(){ // THIS NEEDS MODIFICATION
-//        self.highlightMode = !(self.highlightMode)
-//        debugPrint("*** Highlight mode is \(self.highlightMode.description).")
-//        let highlightOnNotif = AVSpeechUtterance(string: "Highlight mode On")
-//        let highlightOffNotif = AVSpeechUtterance(string: "Highlight mode Off")
-//        highlightOnNotif.rate = 0.6
-//        highlightOffNotif.rate = 0.6
+//    func two(){
+//        debugPrint("toggle note")
+//    }
+//
+//    func minustwo(){
+//        debugPrint("cancel note")
+//    }
+//
+//    func queryModeResolution(gesture: UIGestureRecognizer){
+//        if self.queryMode{
+//            if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+//                if swipeGesture.direction == UISwipeGestureRecognizerDirection.up{
+//                    print("Swiped up")
+//                    if self.highlightMode{
+//                        self.finalizeHighlight()
+//                        self.highlightMode = false
+//                        self.queryMode = false
+//                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Saved"))
+//                    }
+//                    else{
+//                        tempHighlights.append(self.currentWordID)
+//                        self.highlightMode = true
+//                        self.queryMode = false
+//                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight begin"))
+//                    }
+//                }
+//                else if swipeGesture.direction == UISwipeGestureRecognizerDirection.down{
+//                    print("Swiped down")
+//                    if self.highlightMode{
+//                        self.tempHighlights = []
+//                        self.highlightMode = false
+//                        self.queryMode = false
+//                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
+//                    }
+//                    else{
+//                        self.queryMode = false
+//                        speechSynthesizer.speak(AVSpeechUtterance(string: "Highlight Canceled"))
+//                    }
+//                }
+//                else{
+//                    speechSynthesizer.speak(AVSpeechUtterance(string: "Please try again"))
+//                }
+//            }
+//        }
+//    }
+//
+//    func finalizeHighlight(){
+//        let arrangedHighlights = Array(Set(tempHighlights)).sorted()
+//        self.pageHighlights.append(arrangedHighlights)
+//        if pageHighlights.count > 0 {
+//            pageHighlights = pageHighlights.sorted { ($0[0])<($1[0]) }
+//        }
+//        self.tempHighlights = []
+//    }
+//
+//    func toggleHighlightMode(){ // THIS NEEDS MODIFICATION
+////        self.highlightMode = !(self.highlightMode)
+////        debugPrint("*** Highlight mode is \(self.highlightMode.description).")
+////        let highlightOnNotif = AVSpeechUtterance(string: "Highlight mode On")
+////        let highlightOffNotif = AVSpeechUtterance(string: "Highlight mode Off")
+////        highlightOnNotif.rate = 0.6
+////        highlightOffNotif.rate = 0.6
+////        if self.highlightMode {
+////            speechSynthesizer.speak(highlightOnNotif)
+////            self.tempHighlights.append(self.currentWordID)
+////        }
+////        else{
+////            speechSynthesizer.speak(highlightOffNotif)
+////            self.finalizeHighlight()
+////            debugPrint(pageHighlights.debugDescription)
+////        }
+//        self.queryMode = true
 //        if self.highlightMode {
-//            speechSynthesizer.speak(highlightOnNotif)
-//            self.tempHighlights.append(self.currentWordID)
+//            speechSynthesizer.speak(AVSpeechUtterance(string: "Save or cancel highlight?"))
 //        }
-//        else{
-//            speechSynthesizer.speak(highlightOffNotif)
-//            self.finalizeHighlight()
-//            debugPrint(pageHighlights.debugDescription)
+//        else {
+//           speechSynthesizer.speak(AVSpeechUtterance(string: "Begin or cancel highlight?"))
 //        }
-        self.queryMode = true
-        if self.highlightMode {
-            speechSynthesizer.speak(AVSpeechUtterance(string: "Save or cancel highlight?"))
-        }
-        else {
-           speechSynthesizer.speak(AVSpeechUtterance(string: "Begin or cancel highlight?"))
-        }
-    }
-    
-    func cancelHighlight(){
-        self.highlightMode = false
-        debugPrint("*** Highlight mode is cancelled.")
-        self.EOLPlayer.play()
-    }
+//    }
+//
+//    func cancelHighlight(){
+//        self.highlightMode = false
+//        //debugPrint("*** Highlight mode is cancelled.")
+//        self.EOLPlayer.play()
+//    }
     
     func testFunction(){
         let fileName = "Test"
@@ -812,17 +979,29 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        let touchArray = Array((event?.allTouches)!)
-        
-        if(touchArray.count == 1){
+//
+////        for touch in touches{
+////            let point = touch.location(in: self.view)
+////            for (index,finger)  in fingers.enumerated() {
+////                if finger == nil {
+////                    fingers[index] = String(format: "%p", touch)
+////                    print("finger \(index+1): x=\(point.x) , y=\(point.y)")
+////                    break
+////                }
+////            }
+////        }
+////
+//        let touchArray = Array((event?.allTouches)!)
+        if uuidTouch == ""{
             if let touch = touches.first{
+                self.uuidTouch = String(format: "%p", touch)
+                //                debugPrint("++++ single touch uuid is \(self.uuidTouch)")
                 if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
                     self.currentTouch = touch
                     //debugPrint("touch force is \(touch.force)")
                     self.startTime = (event!.timestamp)
                     self.touchLoc = touch.location(in: self.docView)
-                    debugPrint("&first touch touchLoc is *** \(touchLoc)")
+                    //debugPrint("&first touch touchLoc is *** \(touchLoc)")
                     if self.words.count == 0 && self.speaker.isPlaying == false {
                         self.gutterFlag = self.amIstraying(touch: touch)
                         handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
@@ -832,83 +1011,127 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 else{
                     self.whiteSpacePlayer.play()
                 }
-            }}
-            
+            }
+        }
         else{
-            //we need to find the topmost touches and get the two that are most on the left to track
-            var tempTouch1 : UITouch = touchArray[0]
-            var tempTouch2 : UITouch = touchArray[1]
-            if touchArray[0].location(in: self.view).y>touchArray[1].location(in: self.view).y{
-                tempTouch1 = touchArray[1] //topmost touch
-                tempTouch2 = touchArray[0] //topmost-1 touch
-            }
-            for touch in touchArray{
-                if touch.location(in: self.view).y<tempTouch1.location(in: self.view).y{
-                    tempTouch2 = tempTouch1
-                    tempTouch1 = touch
-                }
-                else if touch.location(in: self.view).y>tempTouch1.location(in: self.view).y && touch.location(in: self.view).y<tempTouch2.location(in: self.view).y{
-                    tempTouch2 = touch
-                }
-            }
-            
-            let firstPoint = tempTouch1.location(in: self.view)
-            let secondPoint = tempTouch2.location(in: self.view)
-            if firstPoint.x<secondPoint.x {
-                let readingTouch = tempTouch2
-                self.readingTouchPointer = String(format: "%p", tempTouch2)
-                if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
-                    self.currentTouch = readingTouch
-                    self.startTime = (event!.timestamp)
-                    self.touchLoc = readingTouch.location(in: self.docView)
-                    debugPrint("&first touch touchLoc is *** \(touchLoc)")
-                    if self.words.count == 0 && self.speaker.isPlaying == false {
-                        self.gutterFlag = self.amIstraying(touch: readingTouch)
-                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
-                        dequeueWord(Rate: self.rate)
+            for touch in touches{
+                let addr = String(format: "%p", touch)
+                //debugPrint("addr is \(addr)")
+                if addr == uuidTouch{
+                    if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
+                        self.currentTouch = touch
+                        //debugPrint("touch force is \(touch.force)")
+                        self.startTime = (event!.timestamp)
+                        self.touchLoc = touch.location(in: self.docView)
+                        //debugPrint("&first touch touchLoc is *** \(touchLoc)")
+                        if self.words.count == 0 && self.speaker.isPlaying == false {
+                            self.gutterFlag = self.amIstraying(touch: touch)
+                            handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
+                            dequeueWord(Rate: self.rate)
+                        }
                     }
-                }
-                    
-                else{
-                    self.whiteSpacePlayer.play()
-                }
-                
-                
-            }
-            else {
-                let readingTouch = tempTouch1
-                self.readingTouchPointer = String(format: "%p", tempTouch1)
-                if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
-                    self.currentTouch = readingTouch
-                    self.startTime = (event!.timestamp)
-                    self.touchLoc = readingTouch.location(in: self.docView)
-                    debugPrint("&first touch touchLoc is *** \(touchLoc)")
-                    if self.words.count == 0 && self.speaker.isPlaying == false {
-                        self.gutterFlag = self.amIstraying(touch: readingTouch)
-                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
-                        dequeueWord(Rate: self.rate)
-                        
+                    else{
+                        self.whiteSpacePlayer.play()
                     }
-                }
-                    
-                else{
-                    self.whiteSpacePlayer.play()
                 }
             }
         }
-        super.touchesBegan(touches, with: event)
+    
+        
+//
+//        if(touchArray.count == 1){
+//            if let touch = touches.first{
+////                self.uuidTouch = String(format: "%p", touch)
+////                debugPrint("++++ single touch uuid is \(self.uuidTouch)")
+//                if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))){
+//                    self.currentTouch = touch
+//                    //debugPrint("touch force is \(touch.force)")
+//                    self.startTime = (event!.timestamp)
+//                    self.touchLoc = touch.location(in: self.docView)
+//                    //debugPrint("&first touch touchLoc is *** \(touchLoc)")
+//                    if self.words.count == 0 && self.speaker.isPlaying == false {
+//                        self.gutterFlag = self.amIstraying(touch: touch)
+//                        handleTouchStationary(currentTouch: touch,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//                    }
+//                }
+//                else{
+//                    self.whiteSpacePlayer.play()
+//                }
+//            }}
+//
+//        else{
+//            //we need to find the topmost touches and get the two that are most on the left to track
+//            var tempTouch1 : UITouch = touchArray[0]
+//            var tempTouch2 : UITouch = touchArray[1]
+//            if touchArray[0].location(in: self.view).y>touchArray[1].location(in: self.view).y{
+//                tempTouch1 = touchArray[1] //topmost touch
+//                tempTouch2 = touchArray[0] //topmost-1 touch
+//            }
+//            for touch in touchArray{
+//                if touch.location(in: self.view).y<tempTouch1.location(in: self.view).y{
+//                    tempTouch2 = tempTouch1
+//                    tempTouch1 = touch
+//                }
+//                else if touch.location(in: self.view).y>tempTouch1.location(in: self.view).y && touch.location(in: self.view).y<tempTouch2.location(in: self.view).y{
+//                    tempTouch2 = touch
+//                }
+//            }
+//
+//            let firstPoint = tempTouch1.location(in: self.view)
+//            let secondPoint = tempTouch2.location(in: self.view)
+//            if firstPoint.x<secondPoint.x {
+//                    let readingTouch = tempTouch2
+//                self.readingTouchPointer = String(format: "%p", tempTouch2)
+//                if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
+//                    self.currentTouch = readingTouch
+//                    self.startTime = (event!.timestamp)
+//                    self.touchLoc = readingTouch.location(in: self.docView)
+//                    //debugPrint("&first touch touchLoc is *** \(touchLoc)")
+//                    if self.words.count == 0 && self.speaker.isPlaying == false {
+//                        self.gutterFlag = self.amIstraying(touch: readingTouch)
+//                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//                    }
+//                }
+//
+//                else{
+//                    self.whiteSpacePlayer.play()
+//                }
+//
+//
+//            }
+//            else {
+//                let readingTouch = tempTouch1
+//                self.readingTouchPointer = String(format: "%p", tempTouch1)
+//                if (!amITouchingWhiteSpace(touch: readingTouch.location(in: self.view))){
+//                    self.currentTouch = readingTouch
+//                    self.startTime = (event!.timestamp)
+//                    self.touchLoc = readingTouch.location(in: self.docView)
+//                    //debugPrint("&first touch touchLoc is *** \(touchLoc)")
+//                    if self.words.count == 0 && self.speaker.isPlaying == false {
+//                        self.gutterFlag = self.amIstraying(touch: readingTouch)
+//                        handleTouchStationary(currentTouch: readingTouch,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//
+//                    }
+//                }
+//
+//                else{
+//                    self.whiteSpacePlayer.play()
+//                }
+//            }
+//        }
+//        super.touchesBegan(touches, with: event)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touchArray = Array((event?.allTouches)!)
-        
-        if(touchArray.count == 1){
-            if let touch = touches.first {
-                
-                if touch.force == touch.maximumPossibleForce {
-                    print("This is a force touch")
-                }
-                
+
+        for touch in touches{
+            let addr = String(format: "%p", touch)
+            //debugPrint("addr is \(addr)")
+            if addr == uuidTouch{
+                //readingTouch = touch
                 if touch.location(in: self.docView).x<0 {
                     self.whiteSpacePlayer.stop()
                     if self.hotSpots.contains(touch.location(in: self.view).y){
@@ -921,103 +1144,289 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                     self.currentTouch = touch
                     self.touchLoc = touch.location(in: self.docView)
                     self.gutterFlag = self.amIstraying(touch: touch)
-                    debugPrint("touchLoc is *** \(touchLoc)")
+                    //debugPrint("touchLoc is *** \(touchLoc)")
                     if self._first == true{
                         self._first = false
                         handleTouchMoving(currentTouch: touch,currentLoc: self.touchLoc)
                         dequeueWord(Rate: self.rate)
                     }
                     else{
+                        debugPrint("I got here from touchesmoved")
                         self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
                     }
                 }
                 else if amITouchingWhiteSpace(touch: touch.location(in: self.view)) && touch.location(in: self.view).x>0{
                     self.whiteSpacePlayer.play()
                 }
-                
             }
         }
-            //This is the part that needs to be modified with pointers
-        else{
-
-            var tempTouch1 : UITouch = touchArray[0]
-            var tempTouch2 : UITouch = touchArray[1]
-            if touchArray[0].location(in: self.view).y>touchArray[1].location(in: self.view).y{
-                tempTouch1 = touchArray[1] //topmost touch
-                tempTouch2 = touchArray[0] //topmost-1 touch
-            }
-            for touch in touchArray{
-                if touch.location(in: self.view).y<tempTouch1.location(in: self.view).y{
-                    tempTouch2 = tempTouch1
-                    tempTouch1 = touch
-                }
-                else if touch.location(in: self.view).y>tempTouch1.location(in: self.view).y && touch.location(in: self.view).y<tempTouch2.location(in: self.view).y{
-                    tempTouch2 = touch
-                }
-            }
-
-            let firstPoint = tempTouch1.location(in: self.view)
-            let secondPoint = tempTouch2.location(in: self.view)
-            if firstPoint.x<secondPoint.x {
-                if (!amITouchingWhiteSpace(touch: tempTouch2.location(in: self.view))){
-                    self.currentTouch = tempTouch2
-                    self.touchLoc = tempTouch2.location(in: self.docView)
-                    self.gutterFlag = self.amIstraying(touch: tempTouch2)
-                    debugPrint("touchLoc is *** \(touchLoc)")
-                    if self._first == true{
-                        self._first = false
-                        handleTouchMoving(currentTouch: tempTouch2,currentLoc: self.touchLoc)
-                        dequeueWord(Rate: self.rate)
-                    }
-                    else{
-                        self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
-                    }
-                }
-                else{
-                    self.whiteSpacePlayer.play()
-                }
-            }
-            else{
-                if (!amITouchingWhiteSpace(touch: tempTouch1.location(in: self.view))){
-                    self.currentTouch = tempTouch1
-                    self.touchLoc = tempTouch1.location(in: self.docView)
-                    self.gutterFlag = self.amIstraying(touch: tempTouch1)
-                    debugPrint("touchLoc is *** \(touchLoc)")
-                    if self._first == true{
-                        self._first = false
-                        handleTouchMoving(currentTouch: tempTouch1,currentLoc: self.touchLoc)
-                        dequeueWord(Rate: self.rate)
-                    }
-                    else{
-                        self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
-                    }
-                }
-                else{
-                    self.whiteSpacePlayer.play()
-                }
-            }
-
-
-        }
         
-        
+        //if let touch = readingTouch{
+            
+            //let point = touch.location(in: self.view)
+            
+//            if touch.location(in: self.docView).x<0 {
+//                self.whiteSpacePlayer.stop()
+//                if self.hotSpots.contains(touch.location(in: self.view).y){
+//                    speechSynthesizer.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+//                    //self.wordClick.play()
+//                    //debugPrint("hit!")
+//                }
+//            }
+//            if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))) && touch.previousLocation(in: self.docView).x<touch.location(in: self.docView).x{
+//                self.currentTouch = touch
+//                self.touchLoc = touch.location(in: self.docView)
+//                self.gutterFlag = self.amIstraying(touch: touch)
+//                //debugPrint("touchLoc is *** \(touchLoc)")
+//                if self._first == true{
+//                    self._first = false
+//                    handleTouchMoving(currentTouch: touch,currentLoc: self.touchLoc)
+//                    dequeueWord(Rate: self.rate)
+//                }
+//                else{
+//                    self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
+//                }
+//            }
+//            else if amITouchingWhiteSpace(touch: touch.location(in: self.view)) && touch.location(in: self.view).x>0{
+//                self.whiteSpacePlayer.play()
+//            }
+//
+ //       }
+//
+//        if(touchArray.count == 1){
+//            if let touch = touches.first {
+//                //let point = touch.location(in: self.view)
+//
+//                if touch.location(in: self.docView).x<0 {
+//                    self.whiteSpacePlayer.stop()
+//                    if self.hotSpots.contains(touch.location(in: self.view).y){
+//                        speechSynthesizer.speak(AVSpeechUtterance(string: "line \(hotSpots.index(of: touch.location(in: self.view).y)!)"))
+//                        //self.wordClick.play()
+//                        //debugPrint("hit!")
+//                    }
+//                }
+//                if (!amITouchingWhiteSpace(touch: touch.location(in: self.view))) && touch.previousLocation(in: self.docView).x<touch.location(in: self.docView).x{
+//                    self.currentTouch = touch
+//                    self.touchLoc = touch.location(in: self.docView)
+//                    self.gutterFlag = self.amIstraying(touch: touch)
+//                    //debugPrint("touchLoc is *** \(touchLoc)")
+//                    if self._first == true{
+//                        self._first = false
+//                        handleTouchMoving(currentTouch: touch,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//                    }
+//                    else{
+//                        self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
+//                    }
+//                }
+//                else if amITouchingWhiteSpace(touch: touch.location(in: self.view)) && touch.location(in: self.view).x>0{
+//                    self.whiteSpacePlayer.play()
+//                }
+//
+//            }
+//        }
+//            //This is the part that needs to be modified with pointers
+//        else{
+//
+//            var tempTouch1 : UITouch = touchArray[0]
+//            var tempTouch2 : UITouch = touchArray[1]
+//            if touchArray[0].location(in: self.view).y>touchArray[1].location(in: self.view).y{
+//                tempTouch1 = touchArray[1] //topmost touch
+//                tempTouch2 = touchArray[0] //topmost-1 touch
+//            }
+//            for touch in touchArray{
+//                if touch.location(in: self.view).y<tempTouch1.location(in: self.view).y{
+//                    tempTouch2 = tempTouch1
+//                    tempTouch1 = touch
+//                }
+//                else if touch.location(in: self.view).y>tempTouch1.location(in: self.view).y && touch.location(in: self.view).y<tempTouch2.location(in: self.view).y{
+//                    tempTouch2 = touch
+//                }
+//            }
+//
+//            let firstPoint = tempTouch1.location(in: self.view)
+//            let secondPoint = tempTouch2.location(in: self.view)
+//            if firstPoint.x<secondPoint.x {
+//                if (!amITouchingWhiteSpace(touch: tempTouch2.location(in: self.view))){
+//                    self.currentTouch = tempTouch2
+//                    self.touchLoc = tempTouch2.location(in: self.docView)
+//                    self.gutterFlag = self.amIstraying(touch: tempTouch2)
+//                    //debugPrint("touchLoc is *** \(touchLoc)")
+//                    if self._first == true{
+//                        self._first = false
+//                        handleTouchMoving(currentTouch: tempTouch2,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//                    }
+//                    else{
+//                        self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
+//                    }
+//                }
+//                else{
+//                    self.whiteSpacePlayer.play()
+//                }
+//            }
+//            else{
+//                if (!amITouchingWhiteSpace(touch: tempTouch1.location(in: self.view))){
+//                    self.currentTouch = tempTouch1
+//                    self.touchLoc = tempTouch1.location(in: self.docView)
+//                    self.gutterFlag = self.amIstraying(touch: tempTouch1)
+//                    //debugPrint("touchLoc is *** \(touchLoc)")
+//                    if self._first == true{
+//                        self._first = false
+//                        handleTouchMoving(currentTouch: tempTouch1,currentLoc: self.touchLoc)
+//                        dequeueWord(Rate: self.rate)
+//                    }
+//                    else{
+//                        self.returnFromPlay(currentTouch: self.currentTouch, currentLoc: self.touchLoc)
+//                    }
+//                }
+//                else{
+//                    self.whiteSpacePlayer.play()
+//                }
+//            }
+//
+//
+//        }
+//
+//
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        debugPrint("ENDED")
-        self.speaker.stop()
-        self.whiteSpacePlayer.stop()
-        self.whiteStaticPlayer.stop()
-        self.pinkStaticPlayer.stop()
-        self.words = []
-        do{
-            self.speaker = try AVAudioPlayer(contentsOf: URL(string: clickPath)!)}
-        catch{
-            debugPrint("can't reset!")
+        
+        for touch in touches{
+            let addr = String(format: "%p", touch)
+            //debugPrint("addr is \(addr)")
+            if addr == self.uuidTouch{
+                self.uuidTouch = ""
+                debugPrint("#ENDING")
+                self.words = []
+                if self.speaker.isPlaying{
+                    self.speaker.stop()
+                    self.speaker.currentTime = 0
+                    debugPrint("#1ENDED")
+                    //debugPrint("#stopSpeaker")
+                }
+                if self.whiteSpacePlayer.isPlaying{
+                    self.whiteSpacePlayer.stop()
+                    self.speaker.currentTime = 0
+                    debugPrint("#2ENDED")
+                    //debugPrint("#stopWhitespace")
+                }
+                if self.whiteStaticPlayer.isPlaying{
+                    self.whiteStaticPlayer.stop()
+                    self.speaker.currentTime = 0
+                    debugPrint("#3ENDED")
+                    //debugPrint("#stopWhitestatic")
+                }
+                if self.pinkStaticPlayer.isPlaying{
+                    self.pinkStaticPlayer.stop()
+                    self.speaker.currentTime = 0
+                    debugPrint("#4ENDED")
+                    //debugPrint("#stopPinkstatic")
+                }
+                do{
+                    self.speaker = try AVAudioPlayer(contentsOf: URL(string: clickPath)!)
+                    self.speaker.currentTime = 0
+                    debugPrint("#5ENDED")
+                    //debugPrint("#resetSpeaker")
+                }
+                catch{
+                    //debugPrint("can't reset!")
+                }
+                debugPrint("#ENDED ALL")
+            }
         }
-        
-        
     }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        for touch in touches{
+            let addr = String(format: "%p", touch)
+            //debugPrint("addr is \(addr)")
+            if addr == self.uuidTouch{
+                self.uuidTouch = ""
+                self.words = []
+                if self.speaker.isPlaying{
+                    self.speaker.stop()
+                    self.speaker.currentTime = 0
+                    //debugPrint("#stopSpeaker")
+                }
+                if self.whiteSpacePlayer.isPlaying{
+                    self.whiteSpacePlayer.stop()
+                    self.speaker.currentTime = 0
+                    ///debugPrint("#stopWhitespace")
+                }
+                if self.whiteStaticPlayer.isPlaying{
+                    self.whiteStaticPlayer.stop()
+                    self.speaker.currentTime = 0
+                    //debugPrint("#stopWhitestatic")
+                }
+                if self.pinkStaticPlayer.isPlaying{
+                    self.pinkStaticPlayer.stop()
+                    self.speaker.currentTime = 0
+                    //debugPrint("#stopPinkstatic")
+                }
+                do{
+                    self.speaker = try AVAudioPlayer(contentsOf: URL(string: clickPath)!)
+                    //self.speaker.currentTime = 0
+                    //debugPrint("#resetSpeaker")
+                }
+                catch{
+                    //debugPrint("can't reset!")
+                }
+                //debugPrint("#CANCELLED")
+            }
+        }
+    }
+    
+    func directoryURL() -> NSURL {
+        let fileManager = FileManager.default
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectory = urls[0] //as NSURL
+        //
+        let date :NSDate = NSDate()
+        let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "yyyy-MM-dd'_'HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd'_'HH_mm_ss"
+        
+        dateFormatter.timeZone = NSTimeZone(name: "GMT")! as TimeZone
+        
+        let soundName = "\(dateFormatter.string(from: date as Date)).caf"
+        self.noteName = "\(dateFormatter.string(from: date as Date))"
+        //print(soundName)
+        let soundURL = documentDirectory.appendingPathComponent(soundName)
+        print(soundURL)
+        return soundURL as NSURL
+    }
+    
+    func startRecording() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            audioRecorder = try AVAudioRecorder(url: self.directoryURL() as URL,
+                                                settings: settings)
+            audioRecorder.delegate = self
+            audioRecorder.prepareToRecord()
+        } catch {
+            finishRecording(success: false)
+        }
+        do {
+            try audioSession.setActive(true)
+            audioRecorder.record()
+        } catch {
+        }
+    }
+    
+    func finishRecording(success: Bool) {
+        audioRecorder.stop()
+        if success {
+            print(success)
+        } else {
+            audioRecorder = nil
+            print("Something Wrong.")
+        }
+    }
+    
+    
 }
 
 

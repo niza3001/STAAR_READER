@@ -15,8 +15,8 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     @IBOutlet var verticalRulerView: UIView!
     var rulerClick = AVAudioPlayer()
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
-    //let datapath = (Bundle.main.path(forResource: "Demo_9.7_Data", ofType: "csv", inDirectory: "Demo"))! as String
-    let datapath = (Bundle.main.path(forResource: "Demo_12.9_Data", ofType: "csv", inDirectory: "Demo"))! as String
+    //let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_9.7_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
+    let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_12.9_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
     var hotSpots: [CGFloat] = []
     var data:[[String:String]] = []
     var dataArray = [[String]]()
@@ -28,14 +28,14 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.convertCSV(file: "Demo_9.7_Data")
-        self.convertCSV(file: "Demo_12.9_Data")
+        //self.convertCSV(file: "Intro.BV.BF_9.7_Data")
+        self.convertCSV(file: "Intro.BV.BF_12.9_Data")
         self.extractHotSpots()
      }
     
     
     func readDataFromFile(file:String)-> String!{
-        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Demo")
+        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Intro.BV.BF")
             else {
                 return nil
         }
@@ -75,7 +75,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
         
         for dataRow in data{
             var Row: [String] = []
-            Row.append(dataRow["ID"]!)
+            Row.append(dataRow["id"]!)
             Row.append(dataRow["WORD"]!)
             Row.append(dataRow["POSWX"]!)
             Row.append(dataRow["POSLY"]!)
@@ -119,7 +119,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
             for hotspot in self.hotSpots{
                 if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex {
                     let utterance = AVSpeechUtterance(string: "line \(String(describing: hotSpots.index(of: hotspot)!))")
-                    utterance.rate = 0.8
+                    utterance.rate = 0.5
                     utterance.volume = 0.8
                     synth.speak(utterance)
                     lastLineIndex = hotSpots.index(of: hotspot)!
@@ -133,7 +133,7 @@ class VertRulerController: UIViewController, AVAudioPlayerDelegate {
             for hotspot in self.hotSpots{
                 if abs(touch.location(in: self.view).y-hotspot)<5 && hotSpots.index(of: hotspot)! != lastLineIndex && !(synth.isSpeaking){
                     let utterance = AVSpeechUtterance(string: "line \(String(describing: hotSpots.index(of: hotspot)!))")
-                    utterance.rate = 0.8
+                    utterance.rate = 0.5
                     utterance.volume = 0.8
                     synth.speak(utterance)
                     lastLineIndex = hotSpots.index(of: hotspot)!
