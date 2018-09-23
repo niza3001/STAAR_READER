@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:STAAR_Reader_2016.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

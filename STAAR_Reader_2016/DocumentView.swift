@@ -85,6 +85,7 @@ class DocView: UIView{
         context.saveGState()
         context.setStrokeColor(UIColor.yellow.cgColor)
         context.setLineWidth(3)
+        //guide - func setFillColor(red: CGFloat,green: CGFloat,blue: CGFloat,alpha: CGFloat)
         //context.setFillColor(UIColor.yellow.cgColor)
         context.stroke(rect)
         //context.fill(rects)

@@ -51,10 +51,11 @@ class MainViewController: UIViewController {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        debugPrint("changed page")
         if self.currentPage != 1{
             self.currentPage = self.docAreaController.docView.currentPage
             self.vertRulerController.currentPage = self.currentPage
-            self.vertRulerController.extractHotSpots()
+            self.vertRulerController.view.setNeedsDisplay()
         }
     }
     

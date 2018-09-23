@@ -11,15 +11,14 @@ import UIKit
 import CoreGraphics
 import AVFoundation
 
-
 class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     //MARK: Properties
     //---------------------------------------------------------------------------------------
     @IBOutlet var docView: DocView!
-    let filepath = (Bundle.main.path(forResource: "Intro.BV.BF", ofType: "pdf", inDirectory: "Intro.BV.BF"))! as String
-    //let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_9.7_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
-    let datapath = (Bundle.main.path(forResource: "Intro.BV.BF_12.9_Data", ofType: "csv", inDirectory: "Intro.BV.BF"))! as String
+    let filepath = (Bundle.main.path(forResource: "analytic", ofType: "pdf", inDirectory: "analytic"))! as String
+    //let datapath = (Bundle.main.path(forResource: "analytic_9.7_Data", ofType: "csv", inDirectory: "analytic"))! as String
+    let datapath = (Bundle.main.path(forResource: "analytic_12.9_Data", ofType: "csv", inDirectory: "analytic"))! as String
     let clickPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     let initAudioPath = (Bundle.main.path(forResource: "click", ofType: "wav"))! as String
     
@@ -66,8 +65,11 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     var uuidTouch = ""
     var fingers = [String?](repeating: nil, count:1)
     var noteName: String = ""
-    var EOPFlag: Bool = true
+    var EOPFlag: Bool = false
     let EOPUtterance = AVSpeechUtterance(string: "End of page")
+    var lineIndex = 1
+    var notePlayer = AVAudioPlayer()
+    var noteIsPlaying = false
     
     //MARK: Actions
     //---------------------------------------------------------------------------------------
@@ -119,6 +121,57 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             self.nextPagePressed = false
             self.speechSynthesizer.speak(utterance)
         }
+    }
+    
+    @IBOutlet weak var PlayPauseBtn: UIButton!
+    
+    @IBAction func PlayPause(_ sender: Any) {
+        if !self.noteIsPlaying {
+            let phrase = "Playing"
+            let utterance = AVSpeechUtterance(string: phrase)
+            self.speechSynthesizer.speak(utterance)
+            self.noteIsPlaying = true
+            self.PlayPauseBtn.setTitle("Stop", for: UIControlState.normal)
+            self.PlayPauseBtn.backgroundColor = UIColor.yellow
+            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+            let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+            let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+            let enumerator = FileManager.default.enumerator(atPath: paths[0])
+            let filePaths = enumerator?.allObjects as! [String]
+            let noteFilePaths = filePaths.filter{$0.contains(".caf")}
+            debugPrint(noteFilePaths)
+            if noteFilePaths.count>0{
+                for noteFilePath in noteFilePaths{
+                    do{
+                        let dirPath = paths.first
+                        let noteURL = URL(fileURLWithPath: dirPath!).appendingPathComponent(noteFilePath)
+                        try notePlayer = AVAudioPlayer(contentsOf: noteURL)
+                        notePlayer.volume = 1.0
+                        notePlayer.prepareToPlay()
+                        notePlayer.play()
+                    }
+                    catch{
+                        debugPrint("cant load")
+                        // couldn't load file :(
+                    }
+                }
+            }
+            else {
+                let phrase = "No Recordings Found."
+                let utterance = AVSpeechUtterance(string: phrase)
+                self.speechSynthesizer.speak(utterance)
+            }
+        }
+        else {
+            let phrase = "Stopping"
+            let utterance = AVSpeechUtterance(string: phrase)
+            self.speechSynthesizer.speak(utterance)
+            self.notePlayer.stop()
+            self.noteIsPlaying = false
+            self.PlayPauseBtn.setTitle("Play", for: UIControlState.normal)
+            self.PlayPauseBtn.backgroundColor = UIColor.white
+        }
+        
     }
     
     
@@ -244,9 +297,15 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 ind = self.hotSpots.index(of: hotspot)!
             }}
         //debugPrint("current line index is \(ind)")
-        if self.gutterFlag == 2 {return ind}
-        else if self.gutterFlag == -2 {return ind+2}
-        else {return ind+1}
+        if self.gutterFlag == 2 {
+            self.lineIndex = ind
+            return ind} //line above
+        else if self.gutterFlag == -2 {
+            self.lineIndex = ind+2
+            return ind+2} // line below
+        else {
+            self.lineIndex = ind+1
+            return ind+1}
     }
     
     func amITouchingWhiteSpace(touch: CGPoint)->Bool{
@@ -397,9 +456,9 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                     self.EOLPlay()
                     //wordURL = Bundle.main.url(forResource: self.words[0], withExtension: "aiff")
                      //debugPrint("@@@@@ word is \(self.words[0])")
-                    var wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Intro.BV.BF/Intro.BV.BF_AudioFiles")
+                    var wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "analytic/analytic_AudioFiles")
                     if self.highlightMode {
-                        wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "Intro.BV.BF/Intro.BV.BF_HighlightedAudioFiles")
+                        wordPath = Bundle.main.path(forResource: self.words[0], ofType: "aiff", inDirectory: "analytic/analytic_HighlightedAudioFiles")
                     }
                     let wordURL = URL(fileURLWithPath: wordPath!)
                     
@@ -410,15 +469,15 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                     self.speaker.volume = 1.0
                     ///2BChanged
                     self.speaker.rate = self.rate
-                    if self.docView.currentPage == 3{
-                        self.speaker.rate = 1
-                    }
+//                    if self.docView.currentPage == 3{
+//                        self.speaker.rate = 1
+//                    }
                     self.speaker.prepareToPlay()
                     //debugPrint("playing")
                     self.speaker.play()
                     
                     if self.EOPFlag == true{
-                        self.EOPUtterance.volume = 0.3
+                        self.EOPUtterance.volume = 0.4
                         self.speechSynthesizer.speak(EOPUtterance)
                         self.EOPFlag = false
                     }
@@ -438,7 +497,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     
     func readDataFromFile(file:String)-> String!{
-        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "Intro.BV.BF")
+        guard let filepath = Bundle.main.path(forResource: file, ofType: "csv", inDirectory: "analytic")
             else {
                 return nil
         }
@@ -514,7 +573,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         let currentLoc = touch.location(in: self.view)
         //debugPrint("@@@ currentLoc is \(currentLoc)")
         let currentLine = self.findNearestLineInd(yTouch: currentLoc.y)
-        //debugPrint("@@@ currentLine is \(currentLine)")
+        debugPrint("@@@ currentLine is \(currentLine)")
         //debugPrint("&&&&&&& current y \(currentLoc.y)")
         let prevLoc = touch.previousLocation(in: self.view)
         //debugPrint("@@@ prevLoc is \(prevLoc)")
@@ -522,7 +581,15 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         //debugPrint("@@@ prevLine is \(prevLine)")
         //debugPrint("&&&&&&& prev y \(prevLoc.y)")
         //debugPrint("&&&&&&& dif \(currentLoc.y-prevLoc.y)")
-        let hotspot = self.hotSpots[prevLine-1]
+        var hotspot = self.hotSpots[0]
+        if prevLine != 0 {
+            if prevLine > self.hotSpots.count{
+                hotspot = self.hotSpots.last!
+            }
+            else {
+                hotspot = self.hotSpots[prevLine-1] // where crash happens
+            }
+        }
         //debugPrint("@@@ hotspot is \(hotspot)")
         //debugPrint("@@@ abs(hotspot-currentLoc.y) is \(abs(hotspot-currentLoc.y))")
         if currentLoc.y<prevLoc.y && currentLine==prevLine && abs(hotspot-currentLoc.y)>distStep && abs(hotspot-currentLoc.y)<2*distStep {
@@ -652,7 +719,6 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             }
         }
         debugPrint("EOL word ids are \(self.EOLWords)")
-        debugPrint("EOL  words extracted correctly")
     }
     
     
@@ -666,8 +732,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         //debugPrint("&&&& model name is \(UIDevice.current.modelName)")
         view.addSubview(docView)
         //view.addSubview(docView)
-        //self.convertCSV(file: "Intro.BV.BF_9.7_Data")
-        self.convertCSV(file: "Intro.BV.BF_12.9_Data")
+        //self.convertCSV(file: "analytic_9.7_Data")
+        self.convertCSV(file: "analytic_12.9_Data")
         //debugPrint("path of database file is \(self.datapath)")
         //debugPrint("path of pdf file is \(self.filepath)")
         self.dataArray.removeFirst()
@@ -675,7 +741,12 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         self.getEOLWords()
         self.btnAudioRecord.setTitle("Record", for: UIControlState.normal)
         self.btnAudioRecord.backgroundColor = UIColor.gray
-        self.btnAudioRecord.isEnabled = false
+        self.btnAudioRecord.isEnabled = true
+        
+        self.PlayPauseBtn.setTitle("Play", for: UIControlState.normal)
+        self.PlayPauseBtn.backgroundColor = UIColor.white
+        self.PlayPauseBtn.isEnabled = true
+        
         //      self.view.addSuBView(k)
         //        debugPrint("textrect is \(textRect)")
         //        debugPrint("number of data array elements \(self.dataArray.count)")
@@ -802,6 +873,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             let phrase = "Recording"
             let utterance = AVSpeechUtterance(string: phrase)
             self.speechSynthesizer.speak(utterance)
+            sleep(1)
             self.startRecording()
         } else if audioRecorder.isRecording {
             self.btnAudioRecord.setTitle("Record", for: UIControlState.normal)
@@ -811,7 +883,18 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             let phrase = "Stop Record"
             let utterance = AVSpeechUtterance(string: phrase)
             self.speechSynthesizer.speak(utterance)
+            //self. speechSynthe
         }
+    }
+    
+    //1- note save mode in document area
+    //2- note playback mode in vertical ruler area
+    func copyToDocDir(){}
+    func playNotes(touch: UITouch){
+        var line = findNearestLineInd(yTouch: touch.location(in: self.view).y)
+        
+        // SMILExtract -C myconfig/demo1.conf
+        
     }
     
 //    func saveNote(){
@@ -1126,6 +1209,8 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //super.touchesMoved(touches, with: event)
 
         for touch in touches{
             let addr = String(format: "%p", touch)
@@ -1289,6 +1374,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
 //        }
 //
 //
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -1387,7 +1473,7 @@ class DocAreaController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         let date :NSDate = NSDate()
         let dateFormatter = DateFormatter()
         //dateFormatter.dateFormat = "yyyy-MM-dd'_'HH:mm:ss"
-        dateFormatter.dateFormat = "yyyy-MM-dd'_'HH_mm_ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd'_'HH_mm_ss_\(self.lineIndex)"
         
         dateFormatter.timeZone = NSTimeZone(name: "GMT")! as TimeZone
         
